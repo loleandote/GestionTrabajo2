@@ -46,7 +46,7 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
                 //.resize(80,60)
                 //.centerCrop()
                 .into(holder.imagenView);
-        String texto = String.valueOf(lista.get(position).getId());
+        //String texto = String.valueOf(lista.get(position).getId());
         //Integer nombre = lista.get(postion).getId_reserva();
         //holder.nombreTextView.setText(texto);
         holder.nombreTextView.setText(lista.get(position).getNombre());
