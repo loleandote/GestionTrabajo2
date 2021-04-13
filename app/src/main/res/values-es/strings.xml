@@ -1,6 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FuerzaLol </string>
-    <!-- TODO: Remove or change this placeholder text -->
+    <string name="app_name">FuerzaLol</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--Textos FragmentLogin FragmentRegistro-->
     <string name="NombreLogin">nombre</string>
@@ -33,6 +33,7 @@
         <item>Fecha \u2191</item>
         <item>Fecha \u2193</item>
     </string-array>
+
     <!--Opciones nav Menu-->
     <string name="Instalaciones">Instalaciones</string>
     <string name="Reservas">Reservas</string>

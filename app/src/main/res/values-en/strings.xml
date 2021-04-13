@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">FuerzaLol</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="NombreLogin">name</string>
+    <string name="ContraseñaLogin">password</string>
+    <string name="CorreoRegistro">mail</string>
+    <string name="AccederLogin">Login</string>
+    <string name="RegistroLogin">Register</string>
+    <string name="canceled">CANCELED</string>
+    <string name="TextoReservaInicio">The booking is established on</string>
+    <string name="dia">day</string>
+    <string name="Cancelar">Cancel</string>
+    <string name="desde">from</string>
+    <string name="hasta">to</string>
+    <string-array name="OpcionesPerfil">
+        <item>Languaje</item>
+        <item>Change data</item>
+        <item>Log Out</item>
+    </string-array>
+    <string-array name="OpcionesOrdenar">
+        <item>Price \u2191</item>
+        <item>Price \u2193</item>
+        <item>Date \u2191</item>
+        <item>Date \u2193</item>
+    </string-array>
+    <string name="Instalaciones">facilities</string>
+    <string name="Reservas">Bookings</string>
+    <string name="Usuarios">Users</string>
+    <string name="Usuario">User</string>
+</resources>

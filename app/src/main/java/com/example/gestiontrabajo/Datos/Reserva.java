@@ -18,13 +18,22 @@ public class Reserva {
     private String imagen_instalacion;
     @SerializedName("dia")
     @Expose
-    private String dia;
+    private int dia;
+    @SerializedName("mes")
+    @Expose
+    private int mes;
+    @SerializedName("anyo")
+    @Expose
+    private int anyo;
     @SerializedName("hora_inicio")
     @Expose
     private int hora_inicio;
     @SerializedName("hora_fin")
     @Expose
     private int hora_fin;
+    @SerializedName("precio")
+    @Expose
+    private int precio;
     @SerializedName("cancel_usu")
     @Expose
     private boolean cancel_usu;
@@ -41,19 +50,24 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int id, int id_usuario, int id_instalacion, String imagen_instalacion, String dia, int hora_inicio, int hora_fin, boolean cancel_usu, boolean cancel_admin, boolean no_acude, boolean pagado) {
+    public Reserva(int id, int id_usuario, int id_instalacion, String imagen_instalacion, int dia, int mes, int anyo, int hora_inicio, int hora_fin, int precio, boolean cancel_usu, boolean cancel_admin, boolean no_acude, boolean pagado) {
         this.id = id;
         this.id_usuario = id_usuario;
         this.id_instalacion = id_instalacion;
         this.imagen_instalacion = imagen_instalacion;
         this.dia = dia;
+        this.mes = mes;
+        this.anyo = anyo;
         this.hora_inicio = hora_inicio;
         this.hora_fin = hora_fin;
+        this.precio = precio;
         this.cancel_usu = cancel_usu;
         this.cancel_admin = cancel_admin;
         this.no_acude = no_acude;
         this.pagado = pagado;
     }
+
+
 
     public int getId() {
         return id;
@@ -87,12 +101,28 @@ public class Reserva {
         this.imagen_instalacion = imagen_instalacion;
     }
 
-    public String getDia() {
+    public int getDia() {
         return dia;
     }
 
-    public void setDia(String dia) {
+    public void setDia(int dia) {
         this.dia = dia;
+    }
+
+    public int getMes() {
+        return mes;
+    }
+
+    public void setMes(int mes) {
+        this.mes = mes;
+    }
+
+    public int getAnyo() {
+        return anyo;
+    }
+
+    public void setAnyo(int anyo) {
+        this.anyo = anyo;
     }
 
     public int getHora_inicio() {
@@ -109,6 +139,14 @@ public class Reserva {
 
     public void setHora_fin(int hora_fin) {
         this.hora_fin = hora_fin;
+    }
+
+    public int getPrecio() {
+        return precio;
+    }
+
+    public void setPrecio(int precio) {
+        this.precio = precio;
     }
 
     public boolean isCancel_usu() {
@@ -142,4 +180,5 @@ public class Reserva {
     public void setPagado(boolean pagado) {
         this.pagado = pagado;
     }
+
 }

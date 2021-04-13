@@ -62,7 +62,7 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.MiViewHo
 
 
     public void anyadirALista(ArrayList<Reserva> lista){
-        this.lista.addAll(lista);
+        this.lista=lista;
         notifyDataSetChanged(); // Actualizamos el recyclerView
     }
 

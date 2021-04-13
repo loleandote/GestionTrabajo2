@@ -4,5 +4,6 @@
 
     <item android:id="@+id/InstalacionesNavMenu" android:title="@string/Instalaciones" />
     <item android:id="@+id/ReservasNavMenu" android:title="@string/Reservas" />
-    <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuarios" />
+    <item android:id="@+id/UsuariosNavMenu" android:title="@string/Usuarios" />
+    <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuario" />
 </menu>

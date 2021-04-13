@@ -9,12 +9,8 @@ public class Cliente {
     public static Retrofit obtenerCliente(){
         try {
             if (retrofit == null) {
-
-                // Construimos el objeto Retrofit asociando la URL del servidor y el convertidor Gson
-                // para formatear la respuesta JSON.
                 Retrofit.Builder builder = new Retrofit.Builder();
                 builder.baseUrl(URL);
-                System.out.println("hola");
                 builder.addConverterFactory(GsonConverterFactory.create());
                 retrofit = builder
                         .build();

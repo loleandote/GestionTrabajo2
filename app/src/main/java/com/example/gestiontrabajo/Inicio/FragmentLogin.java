@@ -43,7 +43,7 @@ public class FragmentLogin extends Fragment {
             public void onClick(View v) {
                 String nombre= String.valueOf(nombreEditText.getText());
                 String contraseña= String.valueOf(contraseñaEditText.getText());
-                obtenerUsuario(nombre, contraseña);
+               // obtenerUsuario(nombre, contraseña);
                 Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
                 startActivity(intent);
             }
@@ -68,12 +68,10 @@ public class FragmentLogin extends Fragment {
                 if(lista.size()>0){
                     if(!lista.get(0).isPenalizado() && lista.get(0).getCodigo_rol()==1) {
                         Usuario usuario = lista.get(0);
-                        System.out.println("Hola");
-                       /* Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
+                        Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
                         intent.putExtra("usuario", usuario.getId());
-                        startActivity(intent);*/
-                        // FragmentReservas fragmentReservas = new FragmentReservas(mainActivity);
-                        // mainActivity.cambiarFragment(fragmentReservas);
+                        startActivity(intent);
+
                     }
                 }
 

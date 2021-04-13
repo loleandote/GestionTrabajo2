@@ -3,11 +3,6 @@ package com.example.gestiontrabajo.Instalaciones;
 import android.app.DatePickerDialog;
 import android.os.Build;
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.RequiresApi;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +13,10 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.annotation.RequiresApi;
+import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
@@ -46,6 +45,7 @@ public class FragmentInstalacion extends Fragment {
     private Spinner reservasInicioDisponibles;
     private Spinner reservasFinDisponibles;
     private String dia;
+    private Integer diaNumero, mesNumero, añoNumero;
     private ArrayList<Reserva> reservasDia;
     private ArrayList<Integer>listaInicio;
     private ArrayList<Integer> listaFin;
@@ -74,19 +74,20 @@ public class FragmentInstalacion extends Fragment {
         Picasso.get().load(instalación.getImagenes().get(0))
                 .placeholder(R.drawable.icons8_squats_30)
                 .error(R.drawable.icons8_error_cloud_48)
-                //.resize(80,60)
-                //.centerCrop()
                 .into(imageView);
         LocalDate fecha = LocalDate.now();
         String dia2= String.valueOf(fecha.getDayOfMonth());
+        diaNumero=fecha.getDayOfMonth();
         if (fecha.getDayOfMonth()<10){
             dia2="0"+dia2;
         }
         String mes= String.valueOf(fecha.getMonthValue());
+        mesNumero=fecha.getMonthValue();
         if(fecha.getMonthValue()<10){
             mes="0"+mes;
         }
         dia = dia2+"-"+mes+"-"+String.valueOf(fecha.getYear());
+        añoNumero=fecha.getYear();
 
         DiaEditText = vista.findViewById(R.id.DiaEditText);
         DiaEditText.setText(dia);
@@ -136,7 +137,8 @@ public class FragmentInstalacion extends Fragment {
                 int diferencia = horaFin - horaInicio;
                 if (horaInicio>0 && horaFin>0&& diferencia > 0 && diferencia < 3) {
                     System.out.println(diferencia);
-                    Call<Reserva> respuesta = apiReservas.guardaReserva(actividadConUsuario.usuario.getId(), instalación.getId(), instalación.getImagenes().get(0), dia, horaInicio, horaFin, false, false, true);
+                    int precio = diferencia*instalación.getPrecio_hora();
+                    Call<Reserva> respuesta = apiReservas.guardaReserva(actividadConUsuario.usuario.getId(), instalación.getId(), instalación.getImagenes().get(0), diaNumero,mesNumero, añoNumero, horaInicio, horaFin, precio,false, false, true);
                     respuesta.enqueue(new Callback<Reserva>() {
                         @Override
                         public void onResponse(Call<Reserva> call, Response<Reserva> response) {
@@ -176,10 +178,10 @@ public class FragmentInstalacion extends Fragment {
                     diferencia= diferencia-693987;
                     System.out.println(diferencia);
                     System.out.println(String.valueOf(day + "-" + (month+1) + "-" + year));
+                    diaNumero= day;
+                    mesNumero =month+1;
+                    añoNumero=year;
                     System.out.println(fecha.getDay()+"-"+fecha.getMonth()+"-"+fecha.getYear());
-                    //System.out.println(fecha.toString());
-
-                    System.out.println(fechaActual.toString());
                     String mes = String.valueOf(month+1);
                     String dia2= String.valueOf(day);
                     if (diferencia<=14 && diferencia>0){

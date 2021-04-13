@@ -29,9 +29,12 @@ public interface apiReservas {
             @Field("id_usuario") int id_usuario,
             @Field("id_instalacion") int id_instalacion,
             @Field("imagen_instalacion") String imagen_instalacion,
-            @Field("dia") String dia,
+            @Field("dia") int dia,
+            @Field("mes") int mes,
+            @Field("año") int año,
             @Field("hora_inicio") int hora_inicio,
             @Field("hora_fin") int hora_fin,
+            @Field("precio") int precio,
             @Field("cancel_usu") Boolean cancel_usu,
             @Field("no_acude") Boolean no_acude,
             @Field("pagado") Boolean pagado

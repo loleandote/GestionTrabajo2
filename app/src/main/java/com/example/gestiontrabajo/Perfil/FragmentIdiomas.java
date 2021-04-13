@@ -4,6 +4,9 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
@@ -11,13 +14,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Perfil.FragmentPerfil;
-import com.example.gestiontrabajo.Perfil.PerfilAdapter;
 import com.example.gestiontrabajo.R;
 
 import java.util.Locale;
@@ -59,7 +56,8 @@ public class FragmentIdiomas extends Fragment {
                 Locale locale= Locale.getDefault();
                 String idioma="";
                 if (IdiomaPulsado ==0) {
-                    locale = Locale.getDefault();
+                    locale = new Locale("es");
+                    idioma="es";
                     // actividadConUsuario.beginPayment();
                 }else {
                     locale = Locale.UK;

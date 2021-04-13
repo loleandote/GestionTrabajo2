@@ -40,7 +40,6 @@ public class FragmentInstalaciones extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_instalaciones, container, false);
         recyclerView = vista.findViewById(R.id.ReciclerViewInstalaciones);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());

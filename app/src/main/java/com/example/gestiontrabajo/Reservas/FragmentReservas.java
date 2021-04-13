@@ -1,19 +1,22 @@
 package com.example.gestiontrabajo.Reservas;
 
 import android.app.DatePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.DatePicker;
+import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.DatePicker;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
@@ -22,6 +25,8 @@ import com.example.gestiontrabajo.Datos.Reserva;
 import com.example.gestiontrabajo.R;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -59,6 +64,112 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onClick(View view) {
                 showDatePickerDialog2();
+            }
+        });
+        Spinner orden = vista.findViewById(R.id.OpcionesOrden);
+        orden.setSelection(1);
+        Resources res = getResources();
+        String[] opcion = res.getStringArray(R.array.OpcionesOrdenar);
+        ArrayAdapter<String> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, opcion);
+        orden.setAdapter(listaAdapter);
+        orden.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                ArrayList<Reserva> lista =reservaAdapter.lista;
+                switch (position){
+
+                    case 0:
+                        //filtro por precio asc
+                         Collections.sort(lista, new Comparator<Reserva>() {
+                            @Override
+                            public int compare(Reserva u1, Reserva u2) {
+                                if (u1.getPrecio()==u2.getPrecio())
+                                {
+                                    return 0;
+                                }else if(u1.getPrecio()<u2.getPrecio()){
+                                    return -1;
+                                }else{
+                                    return 1;
+                                }
+                            }
+                        });
+                       reservaAdapter.anyadirALista(lista);
+                        break;
+                    case 1:
+                        //filtro por precio desc
+                        Collections.sort(lista, new Comparator<Reserva>() {
+                            @Override
+                            public int compare(Reserva u1, Reserva u2) {
+                                if (u1.getPrecio()==u2.getPrecio())
+                                {
+                                    return 0;
+                                }else if(u1.getPrecio()<u2.getPrecio()){
+                                    return 1;
+                                }else{
+                                    return -1;
+                                }
+                            }
+                        });
+                        break;
+                    case 2:
+                        //filtro por fecha asc
+                        Collections.sort(lista, new Comparator<Reserva>() {
+                            @Override
+                            public int compare(Reserva u1, Reserva u2) {
+                                if (u1.getAnyo()==u2.getAnyo())
+                                {
+                                   if(u1.getMes()==u2.getMes()){
+                                      if (u1.getDia()<u2.getDia()){
+                                          return -1;
+                                      }else if(u1.getDia()==u2.getDia()){
+                                          return 0;
+                                      }else
+                                          return 1;
+                                   }else if(u1.getMes()<u2.getMes()){
+                                       return -1;
+                                   }else
+                                       return 1;
+                                }else if(u1.getAnyo()<u2.getAnyo()){
+                                    return -1;
+                                }else{
+                                    return 1;
+                                }
+                            }
+                        });
+                        break;
+                    case 3:
+                        //filtro por fecha desc
+                        Collections.sort(lista, new Comparator<Reserva>() {
+                            @Override
+                            public int compare(Reserva u1, Reserva u2) {
+                                if (u1.getAnyo()==u2.getAnyo())
+                                {
+                                    if(u1.getMes()==u2.getMes()){
+                                        if (u1.getDia()<u2.getDia()){
+                                            return 1;
+                                        }else if(u1.getDia()==u2.getDia()){
+                                            return 0;
+                                        }else
+                                            return -1;
+                                    }else if(u1.getMes()<u2.getMes()){
+                                        return 1;
+                                    }else
+                                        return -1;
+                                }else if(u1.getAnyo()<u2.getAnyo()){
+                                    return 1;
+                                }else{
+                                    return -1;
+                                }
+                            }
+                        });
+                        break;
+                }
+                reservaAdapter.anyadirALista(lista);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         recyclerView = vista.findViewById(R.id.ReciclerViewReservas);
@@ -122,9 +233,15 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
                 if(response.isSuccessful()) {
-                    ArrayList<Reserva> listapersonajes = response.body();
-                    reservaAdapter.anyadirALista(listapersonajes);
-                    //System.out.println(listapersonajes.size());
+                    ArrayList<Reserva> listareservas = response.body();
+                    System.out.println(listareservas.size());
+//                    Collections.sort(listapersonajes, new Comparator<Reserva>() {
+//                        @Override
+//                        public int compare(Reserva u1, Reserva u2) {
+//                            return u1.getCreatedOn().compareTo(u2.getCreatedOn());
+//                        }
+//                    });
+                    reservaAdapter.anyadirALista(listareservas);
                 } else{
                     Toast.makeText(getActivity(), "Fallo en la respuesta", Toast.LENGTH_SHORT).show();
                 }
@@ -133,7 +250,7 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onFailure(Call<ArrayList<Reserva>> call, Throwable t) {
                 //Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
-
+                System.out.println(t.getMessage());
             }
         });
     }

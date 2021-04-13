@@ -40,7 +40,6 @@ public class FragmentReserva extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_reserva, container, false);
 
 
@@ -48,8 +47,6 @@ public class FragmentReserva extends Fragment{
         Picasso.get().load(reserva.getImagen_instalacion())
                 .placeholder(R.drawable.icons8_squats_30)
                 .error(R.drawable.icons8_error_cloud_48)
-                //.resize(80,60)
-                //.centerCrop()
                 .into(imagenReserva);
         TextView fechaReserva = vista.findViewById(R.id.FechaResevaTextView);
         fechaReserva.setText(reserva.getDia());
@@ -92,7 +89,6 @@ public class FragmentReserva extends Fragment{
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
-
         return vista;
     }
 
