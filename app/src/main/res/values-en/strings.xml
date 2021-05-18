@@ -18,14 +18,27 @@
         <item>Change data</item>
         <item>Log Out</item>
     </string-array>
-    <string-array name="OpcionesOrdenar">
+    <string-array name="OpcionesOrdenarReservas">
         <item>Price \u2191</item>
         <item>Price \u2193</item>
         <item>Date \u2191</item>
         <item>Date \u2193</item>
     </string-array>
+    <string-array name="OpcionesOrdenarIntalaciones">
+        <item>Name a-z</item>
+        <item>Name z-a</item>
+        <item>Price \u2191</item>
+        <item>Price \u2193</item>
+    </string-array>
+    <string-array name="TiposInstalaciones">
+        <item>All</item>
+        <item>Tennis</item>
+        <item>Basketball</item>
+    </string-array>
     <string name="Instalaciones">facilities</string>
     <string name="Reservas">Bookings</string>
     <string name="Usuarios">Users</string>
+    <string name="Roles">Roles</string>
     <string name="Usuario">User</string>
+    <string name="Guardar">Save</string>
 </resources>

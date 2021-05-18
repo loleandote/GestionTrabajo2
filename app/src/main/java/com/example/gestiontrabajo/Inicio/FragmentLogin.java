@@ -2,14 +2,13 @@ package com.example.gestiontrabajo.Inicio;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+
+import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiUsuario;
@@ -27,6 +26,10 @@ public class FragmentLogin extends Fragment {
 
     public MainActivity mainActivity;
     private View vista;
+
+    public FragmentLogin() {
+    }
+
     public FragmentLogin(MainActivity mainActivity) {
         this.mainActivity= mainActivity;
     }
@@ -43,17 +46,18 @@ public class FragmentLogin extends Fragment {
             public void onClick(View v) {
                 String nombre= String.valueOf(nombreEditText.getText());
                 String contraseña= String.valueOf(contraseñaEditText.getText());
-               // obtenerUsuario(nombre, contraseña);
-                Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
-                startActivity(intent);
+                obtenerUsuario(nombre, contraseña);
+               /* Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
+                startActivity(intent);*/
             }
         });
+        // Creo que lo voy a quitar, no tiene sentido poder crear un usuario de trabajo, para eso los admin podrán crearlo
         Button registro = vista.findViewById(R.id.IrRegistroFragmentButton);
         registro.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentRegistro fragment_registro = new FragmentRegistro(mainActivity);
-                mainActivity.cambiarFragment(fragment_registro);
+                mainActivity.cambiarFragmento(fragment_registro);
             }
         });
         return vista;

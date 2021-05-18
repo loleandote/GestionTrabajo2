@@ -10,7 +10,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-
 import com.example.gestiontrabajo.Datos.Instalación;
 import com.example.gestiontrabajo.R;
 import com.squareup.picasso.Picasso;
@@ -30,6 +29,7 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
     @NonNull
     @Override
     public MiViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i){
+
         LayoutInflater inflater =LayoutInflater.from(viewGroup.getContext());
         View view=inflater.inflate(R.layout.elementos_lista_instalacion,viewGroup,false);
         view.setOnClickListener(this.onClickListener);
@@ -39,16 +39,22 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
 
     @Override
     public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
-        Picasso.get().load(lista.get(position).getImagenes().get(0))
-                .placeholder(R.drawable.icons8_squats_30)
-                .error(R.drawable.icons8_error_cloud_48)
-                .into(holder.imagenView);
-        //String texto = String.valueOf(lista.get(position).getId());
-        //Integer nombre = lista.get(postion).getId_reserva();
-        //holder.nombreTextView.setText(texto);
-        holder.nombreTextView.setText(lista.get(position).getNombre());
-        String tipo = String.valueOf(lista.get(position).getTipo());
-        holder.tipoTextView.setText(tipo);
+        try {
+            System.out.println(lista.size());
+            if (lista.get(position).getImagenes() != null)
+                Picasso.get().load(lista.get(position).getImagenes().get(0))
+                        .placeholder(R.drawable.icons8_squats_30)
+                        .error(R.drawable.icons8_error_cloud_48)
+                        .into(holder.imagenView);
+            //String texto = String.valueOf(lista.get(position).getId());
+            //Integer nombre = lista.get(postion).getId_reserva();
+            //holder.nombreTextView.setText(texto);
+            holder.nombreTextView.setText(lista.get(position).getNombre());
+            String tipo = String.valueOf(lista.get(position).getTipo());
+            holder.tipoTextView.setText(tipo);
+        }catch (Exception exception){
+            System.out.println(exception.getMessage());
+        }
     }
 
     public void setOnItemClickListener(View.OnClickListener onClickListener)
@@ -63,7 +69,7 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
             return lista.size();
     }
     public void anyadirALista(ArrayList<Instalación> lista){
-        this.lista.addAll(lista);
+        this.lista=lista;
         notifyDataSetChanged(); // Actualizamos el recyclerView
     }
 

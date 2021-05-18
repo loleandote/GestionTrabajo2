@@ -20,13 +20,17 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
+import com.example.gestiontrabajo.Conexión.apiRol;
 import com.example.gestiontrabajo.DatePickerFragment;
 import com.example.gestiontrabajo.Datos.Reserva;
+import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
+import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -69,7 +73,7 @@ public class FragmentReservas extends Fragment {
         Spinner orden = vista.findViewById(R.id.OpcionesOrden);
         orden.setSelection(1);
         Resources res = getResources();
-        String[] opcion = res.getStringArray(R.array.OpcionesOrdenar);
+        String[] opcion = res.getStringArray(R.array.OpcionesOrdenarReservas);
         ArrayAdapter<String> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, opcion);
         orden.setAdapter(listaAdapter);
         orden.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -83,14 +87,7 @@ public class FragmentReservas extends Fragment {
                          Collections.sort(lista, new Comparator<Reserva>() {
                             @Override
                             public int compare(Reserva u1, Reserva u2) {
-                                if (u1.getPrecio()==u2.getPrecio())
-                                {
-                                    return 0;
-                                }else if(u1.getPrecio()<u2.getPrecio()){
-                                    return -1;
-                                }else{
-                                    return 1;
-                                }
+                                return Integer.compare(u1.getPrecio(), u2.getPrecio());
                             }
                         });
                        reservaAdapter.anyadirALista(lista);
@@ -100,14 +97,7 @@ public class FragmentReservas extends Fragment {
                         Collections.sort(lista, new Comparator<Reserva>() {
                             @Override
                             public int compare(Reserva u1, Reserva u2) {
-                                if (u1.getPrecio()==u2.getPrecio())
-                                {
-                                    return 0;
-                                }else if(u1.getPrecio()<u2.getPrecio()){
-                                    return 1;
-                                }else{
-                                    return -1;
-                                }
+                                return Integer.compare(u2.getPrecio(), u1.getPrecio());
                             }
                         });
                         break;
@@ -116,24 +106,9 @@ public class FragmentReservas extends Fragment {
                         Collections.sort(lista, new Comparator<Reserva>() {
                             @Override
                             public int compare(Reserva u1, Reserva u2) {
-                                if (u1.getAnyo()==u2.getAnyo())
-                                {
-                                   if(u1.getMes()==u2.getMes()){
-                                      if (u1.getDia()<u2.getDia()){
-                                          return -1;
-                                      }else if(u1.getDia()==u2.getDia()){
-                                          return 0;
-                                      }else
-                                          return 1;
-                                   }else if(u1.getMes()<u2.getMes()){
-                                       return -1;
-                                   }else
-                                       return 1;
-                                }else if(u1.getAnyo()<u2.getAnyo()){
-                                    return -1;
-                                }else{
-                                    return 1;
-                                }
+                                Date fecha1 = new Date(u1.getAnyo(), u1.getMes(), u1.getDia());
+                                Date fecha2 = new Date(u2.getAnyo(), u2.getMes(), u2.getDia());
+                                return fecha1.compareTo(fecha2);
                             }
                         });
                         break;
@@ -142,24 +117,9 @@ public class FragmentReservas extends Fragment {
                         Collections.sort(lista, new Comparator<Reserva>() {
                             @Override
                             public int compare(Reserva u1, Reserva u2) {
-                                if (u1.getAnyo()==u2.getAnyo())
-                                {
-                                    if(u1.getMes()==u2.getMes()){
-                                        if (u1.getDia()<u2.getDia()){
-                                            return 1;
-                                        }else if(u1.getDia()==u2.getDia()){
-                                            return 0;
-                                        }else
-                                            return -1;
-                                    }else if(u1.getMes()<u2.getMes()){
-                                        return 1;
-                                    }else
-                                        return -1;
-                                }else if(u1.getAnyo()<u2.getAnyo()){
-                                    return 1;
-                                }else{
-                                    return -1;
-                                }
+                                Date fecha1 = new Date(u1.getAnyo(), u1.getMes(), u1.getDia());
+                                Date fecha2 = new Date(u2.getAnyo(), u2.getMes(), u2.getDia());
+                                return fecha2.compareTo(fecha1);
                             }
                         });
                         break;
@@ -181,14 +141,14 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onClick(View v) {
                 int resevaPulsada = recyclerView.getChildAdapterPosition(v);
+
                 Reserva reserva = reservaAdapter.lista.get(resevaPulsada);
-                FragmentReserva fragmentReserva = new FragmentReserva(actividadConUsuario);
-                fragmentReserva.reserva= reserva;
-                actividadConUsuario.cambiarFragmento(fragmentReserva);
+                seleccionarReserva(reserva);
             }
         });
         recyclerView.setAdapter(reservaAdapter);
         obtenerDatos();
+        obtenerRoles();
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -234,7 +194,6 @@ public class FragmentReservas extends Fragment {
             public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
                 if(response.isSuccessful()) {
                     ArrayList<Reserva> listareservas = response.body();
-                    System.out.println(listareservas.size());
 //                    Collections.sort(listapersonajes, new Comparator<Reserva>() {
 //                        @Override
 //                        public int compare(Reserva u1, Reserva u2) {
@@ -253,5 +212,32 @@ public class FragmentReservas extends Fragment {
                 System.out.println(t.getMessage());
             }
         });
+    }
+    private void obtenerRoles(){
+        apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
+        List<Integer> lista= new ArrayList<>();
+        lista.add(1);
+        lista.add(2);
+        lista.add(3);
+        Call<ArrayList<Rol>> respuesta= apiRol.obtenerRoles(lista);
+        respuesta.enqueue(new Callback<ArrayList<Rol>>() {
+            @Override
+            public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {
+                if (response.isSuccessful()){
+                    System.out.println(response.body().size());
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ArrayList<Rol>> call, Throwable t) {
+System.out.println(t.getMessage());
+            }
+        });
+    }
+    private void seleccionarReserva(Reserva reserva){
+
+        FragmentReserva fragmentReserva = new FragmentReserva(actividadConUsuario,this);
+        fragmentReserva.reserva= reserva;
+        actividadConUsuario.cambiarFragmento(fragmentReserva);
     }
 }

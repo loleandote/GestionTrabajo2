@@ -48,10 +48,10 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.MiViewHo
                 //.resize(80,60)
                 //.centerCrop()
                 .into(holder.imagenView);
-        String texto = String.valueOf(reserva.getId());
+        String texto = String.valueOf(reserva.getId_instalacion());
         //Integer nombre = lista.get(postion).getId_reserva();
         holder.nombreTextView.setText(texto);
-        String descripcion = String.valueOf(reserva.getId_usuario());
+        String descripcion = String.valueOf(reserva.getDia())+"/"+String.valueOf(reserva.getMes())+"/"+String.valueOf(reserva.getAnyo());
         holder.descripcionTextView.setText(descripcion);
         if (!reserva.isCancel_usu() && !reserva.isCancel_admin()) {
             holder.canceladoTextView.setVisibility(View.GONE);

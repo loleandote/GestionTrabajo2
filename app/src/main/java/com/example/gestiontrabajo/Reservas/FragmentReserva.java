@@ -1,16 +1,15 @@
 package com.example.gestiontrabajo.Reservas;
 
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
@@ -28,6 +27,7 @@ public class FragmentReserva extends Fragment{
     private View vista;
     public Reserva reserva;
     private ImageView imagenReserva;
+    private FragmentReservas fragmentReservas;
     public FragmentReserva() {
         // Required empty public constructor
     }
@@ -36,6 +36,10 @@ public class FragmentReserva extends Fragment{
         this.actividadConUsuario= actividadConUsuario;
     }
 
+    public FragmentReserva(ActividadConUsuario actividadConUsuario, FragmentReservas fragmentReservas){
+        this.actividadConUsuario= actividadConUsuario;
+        this.fragmentReservas=fragmentReservas;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -49,7 +53,7 @@ public class FragmentReserva extends Fragment{
                 .error(R.drawable.icons8_error_cloud_48)
                 .into(imagenReserva);
         TextView fechaReserva = vista.findViewById(R.id.FechaResevaTextView);
-        fechaReserva.setText(reserva.getDia());
+        fechaReserva.setText(String.valueOf(reserva.getDia()));
         TextView fechaDesdeReserva = vista.findViewById(R.id.FechaDesdeTextView);
         fechaDesdeReserva.setText(String.valueOf(reserva.getHora_inicio())+":00");
         TextView fechaHastaReserva = vista.findViewById(R.id.FechaHastaTextView);

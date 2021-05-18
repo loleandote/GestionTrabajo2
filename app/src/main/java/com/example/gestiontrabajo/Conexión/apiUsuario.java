@@ -20,6 +20,8 @@ public interface apiUsuario {
     @GET("usuarios")
     Call<ArrayList<Usuario>> obtenerUsuario(@Query("nombre_usuario") String nombre_usuario, @Query("contrasña_usuario") String contraseña);
     @GET("usuarios")
+    Call<ArrayList<Usuario>> obtenerUsuariosPorRol(@Query("codigo_rol") int rol);
+    @GET("usuarios")
     Call<ArrayList<Usuario>> obtenerUsuarioNomberContraseñaCorreo(@Query("nombre_usuario") String nombre_usuario, @Query("contrasña_usuario") String contraseña,@Query("correo_usuario")String correoUsuario);
     @FormUrlEncoded
     @POST("usuarios")

@@ -1,10 +1,6 @@
 package com.example.gestiontrabajo.Inicio;
 
 import android.os.Bundle;
-
-import androidx.activity.OnBackPressedCallback;
-import androidx.fragment.app.Fragment;
-
 import android.util.Patterns;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,9 +8,11 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.activity.OnBackPressedCallback;
+import androidx.fragment.app.Fragment;
+
 import com.example.gestiontrabajo.Conexión.apiUsuario;
 import com.example.gestiontrabajo.Datos.Usuario;
-import com.example.gestiontrabajo.Inicio.FragmentLogin;
 import com.example.gestiontrabajo.MainActivity;
 import com.example.gestiontrabajo.R;
 
@@ -61,7 +59,7 @@ public class FragmentRegistro extends Fragment {
             public void handleOnBackPressed() {
                 // Handle the back button event
                 FragmentLogin fragmentLogin = new FragmentLogin(mainActivity);
-                mainActivity.cambiarFragment(fragmentLogin);
+                mainActivity.cambiarFragmento(fragmentLogin);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -107,7 +105,7 @@ public class FragmentRegistro extends Fragment {
             }
         });
         FragmentLogin fragment_login= new FragmentLogin(mainActivity);
-        mainActivity.cambiarFragment(fragment_login);
+        mainActivity.cambiarFragmento(fragment_login);
     }
     private boolean validarEmail(String email) {
         Pattern pattern = Patterns.EMAIL_ADDRESS;

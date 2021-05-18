@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Roles.FragmentRol">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/constraintLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/textView5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="24dp"
+                android:layout_marginLeft="50dp"
+                android:text="nombre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <EditText
+                android:id="@+id/NombreRolEditText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/textView13"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Rango de rol"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView5" />
+
+            <EditText
+                android:id="@+id/RangoRolEditText"
+                android:layout_width="200dp"
+                android:layout_height="wrap_content"
+                android:inputType="number"
+                style="@style/TextoRol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/NombreRolEditText" />
+
+            <TextView
+                android:id="@+id/textView3"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Reservar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView13" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/HacerReservas"
+                style="@style/SwitchRol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/RangoRolEditText" />
+
+            <TextView
+                android:id="@+id/CambiarContraseñaEditText"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Cambiar contraseña"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView3" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/CambiarContraseña"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SwitchRol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/HacerReservas" />
+
+            <TextView
+                android:id="@+id/ModUsuTextView"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Mod usuario"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CambiarContraseñaEditText" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/ModUsu"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SwitchRol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/CambiarContraseña" />
+
+            <TextView
+                android:id="@+id/ModRolTextView"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Modidifcar rol"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ModUsuTextView" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/ModRol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SwitchRol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ModUsu" />
+
+            <TextView
+                android:id="@+id/ImpExpinformesEditText"
+                style="@style/TextoRoles"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Imp/Exp informes"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ModRolTextView" />
+
+            <com.google.android.material.switchmaterial.SwitchMaterial
+                android:id="@+id/ImpExpinformes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                style="@style/SwitchRol"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ModRol" />
+
+            <Button
+                android:id="@+id/GuardarRol"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Guardar"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/ImpExpinformes" />
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</FrameLayout>

@@ -9,20 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <ImageView
-            android:id="@+id/InstalacionImagen"
+
+            <ImageView
+                android:id="@+id/InstalacionImagen"
+                android:layout_width="match_parent"
+                android:layout_height="300dp"
+                android:layout_margin="16dp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerViewImagenesInstalacion"
             android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:layout_margin="16dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            android:layout_height="80dp"
+            android:orientation="horizontal"
+            app:layout_constraintTop_toBottomOf="@+id/InstalacionImagen" />
 
         <EditText
             android:id="@+id/DiaEditText"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
             android:layout_weight="1"
             android:clickable="true"
             android:focusable="false"
@@ -30,7 +38,7 @@
             android:inputType="date"
             app:layout_constraintHorizontal_weight="2"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/InstalacionImagen" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
 
 
         <Spinner

@@ -17,6 +17,8 @@ import android.widget.Spinner;
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
@@ -51,6 +53,9 @@ public class FragmentInstalacion extends Fragment {
     private ArrayList<Integer> listaFin;
     private int horaInicio;
     private int horaFin;
+    private ImagenInstalacionAdapter imagenInstalacionAdapter;
+    private int imagenPulsada;
+    private ImageView imageView;
 
     public FragmentInstalacion() {
         // Required empty public constructor
@@ -70,7 +75,7 @@ public class FragmentInstalacion extends Fragment {
         reservasDia = new ArrayList<>();
         horaInicio=0;
         horaFin=0;
-        ImageView imageView = vista.findViewById(R.id.InstalacionImagen);
+        imageView = vista.findViewById(R.id.InstalacionImagen);
         Picasso.get().load(instalación.getImagenes().get(0))
                 .placeholder(R.drawable.icons8_squats_30)
                 .error(R.drawable.icons8_error_cloud_48)
@@ -126,6 +131,23 @@ public class FragmentInstalacion extends Fragment {
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
 
+            }
+        });
+        RecyclerView recyclerViewImagenes = vista.findViewById(R.id.recyclerViewImagenesInstalacion);
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
+        linearLayoutManager.setOrientation(LinearLayoutManager.HORIZONTAL);
+        recyclerViewImagenes.setLayoutManager(linearLayoutManager);
+        imagenInstalacionAdapter = new ImagenInstalacionAdapter(getActivity());
+        imagenInstalacionAdapter.anyadirALista(instalación.getImagenes());
+        recyclerViewImagenes.setAdapter(imagenInstalacionAdapter);
+        imagenInstalacionAdapter.setOnItemClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                imagenPulsada= recyclerViewImagenes.getChildAdapterPosition(v);
+                Picasso.get().load(imagenInstalacionAdapter.lista.get(imagenPulsada))
+                        .placeholder(R.drawable.icons8_squats_30)
+                        .error(R.drawable.icons8_error_cloud_48)
+                        .into(imageView);
             }
         });
         //ActualizarListas();
@@ -231,19 +253,19 @@ public class FragmentInstalacion extends Fragment {
     }
     private void obtenerReservasDia(){
         apiReservas apiReservas= actividadConUsuario.retrofit.create(apiReservas.class);
-        Call<ArrayList<Reserva>>respuesta = apiReservas.obtenerReservas(dia);
+        Call<ArrayList<Reserva>>respuesta = apiReservas.obtenerReservas(diaNumero,mesNumero,añoNumero);
         respuesta.enqueue(new Callback<ArrayList<Reserva>>() {
             @Override
             public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
                 reservasDia=response.body();
                 System.out.println(response.body().size());
                 for (int i=0;i<response.body().size();i++){
-                    int posicion =listaInicio.indexOf(response.body().get(i).getHora_inicio());
-                    if (posicion>=0)
+                    int diferencia = response.body().get(i).getHora_fin()-response.body().get(i).getHora_inicio();
+                    for(int j=0;j<diferencia;j++) {
+                        int posicion = listaInicio.indexOf(response.body().get(i).getHora_inicio() + j);
                         listaInicio.remove(posicion);
-                    posicion=listaFin.indexOf(response.body().get(i).getHora_fin());
-                    if(posicion>=0)
                         listaFin.remove(posicion);
+                    }
                 }
                 ActualizarListas();
             }

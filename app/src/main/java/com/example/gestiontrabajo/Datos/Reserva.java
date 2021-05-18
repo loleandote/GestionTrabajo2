@@ -22,7 +22,7 @@ public class Reserva {
     @SerializedName("mes")
     @Expose
     private int mes;
-    @SerializedName("anyo")
+    @SerializedName("año")
     @Expose
     private int anyo;
     @SerializedName("hora_inicio")

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
-
-    <item android:id="@+id/InstalacionesNavMenu" android:title="@string/Instalaciones" />
-    <item android:id="@+id/ReservasNavMenu" android:title="@string/Reservas" />
-    <item android:id="@+id/UsuariosNavMenu" android:title="@string/Usuarios" />
-    <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuario" />
+    <item android:id="@+id/InstalacionesNavMenu" android:title="@string/Instalaciones" android:visible="false" />
+    <item android:id="@+id/ReservasNavMenu" android:title="@string/Reservas" android:visible="false" />
+    <item android:id="@+id/UsuariosNavMenu" android:title="@string/Usuarios" android:visible="false" />
+    <item android:id="@+id/RolesNavMenu" android:title="@string/Roles" android:visible="false" />
+    <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuario" android:visible="false" />
 </menu>

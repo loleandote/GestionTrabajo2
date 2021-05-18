@@ -27,16 +27,28 @@
         <item>Español</item>
         <item>English</item>
     </string-array>
-    <string-array name="OpcionesOrdenar">
+    <string-array name="OpcionesOrdenarReservas">
         <item>Precio \u2191</item>
         <item>Precio \u2193</item>
         <item>Fecha \u2191</item>
         <item>Fecha \u2193</item>
     </string-array>
-
+    <string-array name="OpcionesOrdenarIntalaciones">
+        <item>Nombre a-z</item>
+        <item>Nombre z-a</item>
+        <item>Precio \u2191</item>
+        <item>Precio \u2193</item>
+    </string-array>
+    <string-array name="TiposInstalaciones">
+        <item>Todos</item>
+        <item>Tenis</item>
+        <item>aBloncesto</item>
+    </string-array>
     <!--Opciones nav Menu-->
     <string name="Instalaciones">Instalaciones</string>
     <string name="Reservas">Reservas</string>
     <string name="Usuarios">Usuarios</string>
+    <string name="Roles">Roles</string>
     <string name="Usuario">Usuario</string>
+    <string name="Guardar">Guardar</string>
 </resources>

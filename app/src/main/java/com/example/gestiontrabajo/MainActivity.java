@@ -1,13 +1,13 @@
 package com.example.gestiontrabajo;
 
+import android.content.SharedPreferences;
+import android.content.res.Configuration;
+import android.os.Bundle;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
-
-import android.content.SharedPreferences;
-import android.content.res.Configuration;
-import android.os.Bundle;
 
 import com.example.gestiontrabajo.Conexión.Cliente;
 import com.example.gestiontrabajo.Inicio.FragmentLogin;
@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.add(R.id.FrameLayoutRegistro,fragmentLogin);
         fragmentTransaction.commit();
     }
-    public void cambiarFragment(Fragment fragment){
+    public void cambiarFragmento(Fragment fragment){
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FrameLayoutRegistro,fragment);

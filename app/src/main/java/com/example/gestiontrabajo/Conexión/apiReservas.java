@@ -19,9 +19,9 @@ public interface apiReservas {
     @GET("reservas")
     Call<ArrayList<Reserva>> obtenerReservas();
     @GET("reservas")
-    Call<ArrayList<Reserva>> obtenerReservas(@Query("id_reserva")int id);
+    Call<ArrayList<Reserva>> obtenerReservas(@Query("id")int id);
     @GET("reservas")
-    Call<ArrayList<Reserva>> obtenerReservas(@Query("dia") String dia);
+    Call<ArrayList<Reserva>> obtenerReservas(@Query("dia") int dia,@Query("mes") int mes,@Query("año") int año);
 
     @FormUrlEncoded
     @POST("reservas")
