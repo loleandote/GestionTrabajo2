@@ -20,7 +20,7 @@ public interface apiInstalaciones {
     @GET("instalaciones")
     Call<ArrayList<Instalación>> obtenerInstalaciones();
     @GET("instalaciones")
-    Call<ArrayList<Instalación>> obtenerInstalaciones(@Query("tipo")String tipo);
+    Call<ArrayList<Instalación>> obtenerInstalacionesPorTipo(@Query("tipo")String tipo);
 
     @PUT("instalaciones/{id}")
     Call<Instalación> actualizarInstalacion(@Path("id") int id, @Body Instalación instalación);

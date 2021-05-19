@@ -42,7 +42,7 @@ public class ImagenInstalacionAdapter extends RecyclerView.Adapter<ImagenInstala
                         .placeholder(R.drawable.icons8_squats_30)
                         .error(R.drawable.icons8_error_cloud_48)
                         .into(holder.imagenView);
-        }catch (Exception exception){
+        }catch (IllegalArgumentException exception){
             System.out.println(exception.getMessage());
         }
     }

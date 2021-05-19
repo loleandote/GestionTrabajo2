@@ -106,25 +106,26 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
         String[] tiposLengua = res.getStringArray(R.array.TiposInstalaciones);
-        String[] tipos ={"Todas", "tenis", "baloncesto"};
+        String[] tipos ={"Todas", "Tenis", "baloncesto"};
         ArrayAdapter<String>listaTiposAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, tiposLengua);
-        tipo.setSelection(1);
+        //tipo.setSelection(1);
         tipo.setAdapter(listaTiposAdapter);
         tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                if (position>0){
+                System.out.println("llegado");
+                if (position==0){
                     obtenerDatos();
                 }else
                 {
                     String tipo = tipos[position];
-                    obtenerDatos(tipo);
+                    obtenerDatosPorTipo(tipo);
                 }
             }
 
             @Override
             public void onNothingSelected(AdapterView<?> parent) {
-
+                obtenerDatos();
             }
         });
         recyclerView = vista.findViewById(R.id.ReciclerViewInstalaciones);
@@ -133,7 +134,6 @@ public class FragmentInstalaciones extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
 
         instalaciónAdapter = new InstalaciónAdapter(getActivity());
-        obtenerDatos();
         recyclerView.setAdapter(instalaciónAdapter);
         instalaciónAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
@@ -172,6 +172,8 @@ public class FragmentInstalaciones extends Fragment {
             public void onResponse(Call<ArrayList<Instalación>> call, Response<ArrayList<Instalación>> response) {
                 if (response.isSuccessful()){
                     ArrayList<Instalación>listaInstalaciones = response.body();
+                    System.out.println(listaInstalaciones.size());
+                    System.out.println(listaInstalaciones.get(1).getNombre());
                     instalaciónAdapter.anyadirALista(listaInstalaciones);
                 }
             }
@@ -182,9 +184,9 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
     }
-    private void  obtenerDatos(String tipo){
+    private void  obtenerDatosPorTipo(String tipo){
         apiInstalaciones apiInstalaciones = actividadConUsuario.retrofit.create(apiInstalaciones.class);
-        Call<ArrayList<Instalación>> respuesta = apiInstalaciones.obtenerInstalaciones(tipo);
+        Call<ArrayList<Instalación>> respuesta = apiInstalaciones.obtenerInstalacionesPorTipo(tipo);
         respuesta.enqueue(new Callback<ArrayList<Instalación>>() {
             @Override
             public void onResponse(Call<ArrayList<Instalación>> call, Response<ArrayList<Instalación>> response) {

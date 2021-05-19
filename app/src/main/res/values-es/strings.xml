@@ -42,7 +42,7 @@
     <string-array name="TiposInstalaciones">
         <item>Todos</item>
         <item>Tenis</item>
-        <item>aBloncesto</item>
+        <item>Baloncesto</item>
     </string-array>
     <!--Opciones nav Menu-->
     <string name="Instalaciones">Instalaciones</string>

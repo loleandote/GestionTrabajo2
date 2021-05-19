@@ -22,6 +22,7 @@ import com.example.gestiontrabajo.Instalaciones.FragmentInstalaciones;
 import com.example.gestiontrabajo.Perfil.FragmentPerfil;
 import com.example.gestiontrabajo.Reservas.FragmentReservas;
 import com.example.gestiontrabajo.Roles.FragmentRoles;
+import com.example.gestiontrabajo.Usuarios.FragmentUsuarios;
 import com.google.android.material.navigation.NavigationView;
 
 import java.util.ArrayList;
@@ -77,8 +78,8 @@ public class ActividadConUsuario extends AppCompatActivity {
                         fragment = new FragmentReservas();
                         break;
                         case R.id.UsuariosNavMenu:
-                       /* fragmentTransaction= true;
-                        fragment = new FragmentReservas();*/
+                       fragmentTransaction= true;
+                        fragment = new FragmentUsuarios();
                         break;
                     case R.id.RolesNavMenu:
                         fragmentTransaction = true;
@@ -149,6 +150,7 @@ public class ActividadConUsuario extends AppCompatActivity {
         });
     }
     public void cambiarFragmento(Fragment fragment){
+
         if( fragment instanceof FragmentInstalaciones)
         {
             ((FragmentInstalaciones) fragment).actividadConUsuario= this;
@@ -163,6 +165,9 @@ public class ActividadConUsuario extends AppCompatActivity {
                     if (fragment instanceof FragmentRoles){
                         ((FragmentRoles) fragment).actividadConUsuario= this;
                     }
+                    else
+                        if (fragment instanceof FragmentUsuarios)
+                            ((FragmentUsuarios) fragment).actividadConUsuario= this;
                 }
             }
         }

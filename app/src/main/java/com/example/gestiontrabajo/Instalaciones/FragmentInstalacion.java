@@ -76,10 +76,14 @@ public class FragmentInstalacion extends Fragment {
         horaInicio=0;
         horaFin=0;
         imageView = vista.findViewById(R.id.InstalacionImagen);
-        Picasso.get().load(instalación.getImagenes().get(0))
-                .placeholder(R.drawable.icons8_squats_30)
-                .error(R.drawable.icons8_error_cloud_48)
-                .into(imageView);
+        try {
+            Picasso.get().load(instalación.getImagenes().get(0))
+                    .placeholder(R.drawable.icons8_squats_30)
+                    .error(R.drawable.icons8_error_cloud_48)
+                    .into(imageView);
+        }catch (IllegalArgumentException exception){
+            System.out.println(exception.getMessage());
+        }
         LocalDate fecha = LocalDate.now();
         String dia2= String.valueOf(fecha.getDayOfMonth());
         diaNumero=fecha.getDayOfMonth();

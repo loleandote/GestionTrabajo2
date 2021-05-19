@@ -40,7 +40,6 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
     @Override
     public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
         try {
-            System.out.println(lista.size());
             if (lista.get(position).getImagenes() != null)
                 Picasso.get().load(lista.get(position).getImagenes().get(0))
                         .placeholder(R.drawable.icons8_squats_30)
@@ -49,12 +48,13 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
             //String texto = String.valueOf(lista.get(position).getId());
             //Integer nombre = lista.get(postion).getId_reserva();
             //holder.nombreTextView.setText(texto);
-            holder.nombreTextView.setText(lista.get(position).getNombre());
-            String tipo = String.valueOf(lista.get(position).getTipo());
-            holder.tipoTextView.setText(tipo);
+
         }catch (Exception exception){
             System.out.println(exception.getMessage());
         }
+        holder.nombreTextView.setText(lista.get(position).getNombre());
+        String tipo = String.valueOf(lista.get(position).getTipo());
+        holder.tipoTextView.setText(tipo);
     }
 
     public void setOnItemClickListener(View.OnClickListener onClickListener)
