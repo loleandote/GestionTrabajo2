@@ -129,8 +129,9 @@ public class FragmentInstalacion extends Fragment {
         if (fecha.getDate()<10){
             dia2="0"+dia2;
         }
-        String mes= String.valueOf(fecha.getMonth());
-        mesNumero=fecha.getMonth();
+
+        mesNumero=fecha.getMonth()+1;
+        String mes= String.valueOf(mesNumero);
         if(fecha.getMonth()<10){
             mes="0"+mes;
         }
@@ -200,9 +201,6 @@ public class FragmentInstalacion extends Fragment {
                 apiReservas apiReservas = actividadConUsuario.retrofit.create(apiReservas.class);
                 int diferencia = horaFin - horaInicio;
 
-                System.out.println(horaFin);
-                System.out.println(diferencia);
-                System.out.println(instalación.getTiempo_max_reserva());
                 if (horaInicio>0 && horaFin>0&& diferencia > 0 && diferencia <= instalación.getTiempo_max_reserva()) {
                     int precio = diferencia*instalación.getPrecio_hora();
                     int id=0;
@@ -211,7 +209,6 @@ public class FragmentInstalacion extends Fragment {
                     else
                         if (usuario.getId()>0)
                         id=usuario.getId();
-                        System.out.println(String.valueOf(id)+"adios");
                         if (id >0){
                     Call<Reserva> respuesta = apiReservas.guardaReserva(id, instalación.getId(), instalación.getImagenes().get(0),instalación.getNombre(), diaNumero,mesNumero, añoNumero+1900, horaInicio, horaFin, precio,false, false, true);
                     respuesta.enqueue(new Callback<Reserva>() {
@@ -264,7 +261,7 @@ public class FragmentInstalacion extends Fragment {
                     diaNumero= day;
                     mesNumero =month+1;
                     añoNumero=year;
-                    String mes = String.valueOf(month+1);
+                    String mes = String.valueOf(mesNumero);
                     String dia2= String.valueOf(day);
                     if (diferencia<=14 && diferencia>0){
                         horaInicio=0;

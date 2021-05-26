@@ -14,7 +14,7 @@
         <HorizontalScrollView
             android:id="@+id/horizontalScrollView"
             android:layout_width="match_parent"
-            android:layout_height="50dp"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             app:layout_constraintTop_toTopOf="parent">
 
@@ -23,37 +23,22 @@
                 android:layout_height="match_parent"
                 android:orientation="horizontal">
 
-                <EditText
-                    android:id="@+id/ReservaFechaInicio"
-                    android:layout_width="200dp"
+                <Spinner
+                    android:id="@+id/AñosUsuario"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:hint="@string/desde"
-                    android:inputType="date"
-                    app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_weight="1" />
 
-
-                <EditText
-                    android:id="@+id/ReservaFechaFin"
-                    android:layout_width="200dp"
+                <Spinner
+                    android:id="@+id/MesesAño"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:clickable="true"
-                    android:focusable="false"
-                    android:hint="@string/hasta"
-                    android:inputType="date"
-                    app:layout_constraintEnd_toEndOf="parent"
-                    app:layout_constraintHorizontal_weight="2"
-                    app:layout_constraintTop_toTopOf="parent" />
+                    android:layout_weight="1" />
                 <Spinner
                     android:id="@+id/OpcionesOrden"
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp" />
+                    android:layout_weight="1"/>
             </LinearLayout>
 
         </HorizontalScrollView>

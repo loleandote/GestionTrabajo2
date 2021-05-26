@@ -42,9 +42,10 @@ public class FragmentReservas extends Fragment {
     private View vista;
     private RecyclerView recyclerView;
     public ReservaAdapter reservaAdapter;
-    private EditText reservaFechaInicio;
-    private EditText reservaFechaFin;
+    private Spinner AñosUsuario;
+    private Spinner MesesAño;
     private boolean soloYo;
+    private int dia, mes, año;
     public FragmentReservas() {
         // Required empty public constructor
     }
@@ -67,26 +68,66 @@ public class FragmentReservas extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_reservas, container, false);
-        reservaFechaInicio= vista.findViewById(R.id.ReservaFechaInicio);
-        reservaFechaInicio.setOnClickListener(new View.OnClickListener() {
+        Date fecha = new Date();
+        dia= fecha.getDay();
+        mes= fecha.getMonth()+1;
+        año = fecha.getYear()+1900;
+        AñosUsuario = vista.findViewById(R.id.AñosUsuario);
+        ArrayList<Integer>listaAños = new ArrayList<>();
+
+        int diferencia;
+        if (soloYo)
+        diferencia= año-actividadConUsuario.usuario.getAnyo_alta();
+        else
+            diferencia=año-2021;
+        for (int i=0;i<=diferencia;i++){
+            listaAños.add(actividadConUsuario.usuario.getAnyo_alta()+i);
+        }
+        ArrayAdapter<Integer> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaAños);
+        AñosUsuario.setAdapter(listaAdapter);
+        AñosUsuario.setSelection(listaAños.size()-1);
+        AñosUsuario.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                showDatePickerDialog();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                año = listaAños.get(0)+position;
+                if(soloYo)
+                    obtenerDatosUsuario();
+                else
+                    obtenerDatos();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
-        reservaFechaFin= vista.findViewById(R.id.ReservaFechaFin);
-        reservaFechaFin.setOnClickListener(new View.OnClickListener() {
+        MesesAño = vista.findViewById(R.id.MesesAño);
+        Resources res = getResources();
+        String[] listaMeses = res.getStringArray(R.array.MesesAño);
+        ArrayAdapter<String> listaMesesAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaMeses);
+        MesesAño.setAdapter(listaMesesAdapter);
+        MesesAño.setSelection(mes-1);
+        MesesAño.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
-            public void onClick(View view) {
-                showDatePickerDialog2();
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                mes= position+1;
+                if(soloYo)
+                    obtenerDatosUsuario();
+                else
+                    obtenerDatos();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
             }
         });
         Spinner orden = vista.findViewById(R.id.OpcionesOrden);
         orden.setSelection(1);
-        Resources res = getResources();
+
         String[] opcion = res.getStringArray(R.array.OpcionesOrdenarReservas);
-        ArrayAdapter<String> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, opcion);
-        orden.setAdapter(listaAdapter);
+        ArrayAdapter<String> listaAdapter2 = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, opcion);
+        orden.setAdapter(listaAdapter2);
         orden.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -158,15 +199,11 @@ public class FragmentReservas extends Fragment {
             }
         });
         recyclerView.setAdapter(reservaAdapter);
-        if (soloYo) {
-            System.out.println("noadsf");
-            obtenerDatos(actividadConUsuario.usuario.getId());
-        }
-        else {
-            System.out.println("malo");
+        if (soloYo)
+            obtenerDatosUsuario();
+       else
             obtenerDatos();
-        }
-        //obtenerRoles();
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -179,33 +216,10 @@ public class FragmentReservas extends Fragment {
         return vista;
     }
 
-    private void showDatePickerDialog() {
-        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because January is zero
-                final String selectedDate = day + "-" + (month+1) + "-" + year;
-                reservaFechaInicio.setText(selectedDate);
-            }
-        });
 
-        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
-    private void showDatePickerDialog2() {
-        DatePickerFragment newFragment = DatePickerFragment.newInstance(new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-                // +1 because January is zero
-                final String selectedDate = day + "-" + (month+1) + "-" + year;
-                reservaFechaFin.setText(selectedDate);
-            }
-        });
-
-        newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
-    }
     private void  obtenerDatos(){
         apiReservas api = actividadConUsuario.retrofit.create(apiReservas.class);
-        Call<ArrayList<Reserva>> respuesta1 = api.obtenerReservas();
+        Call<ArrayList<Reserva>> respuesta1 = api.obtenerReservas(mes, año);
 
         respuesta1.enqueue(new Callback<ArrayList<Reserva>>() {
             @Override
@@ -225,9 +239,9 @@ public class FragmentReservas extends Fragment {
             }
         });
     }
-    private void  obtenerDatos(int idUsuario){
+    private void  obtenerDatosUsuario(){
         apiReservas api = actividadConUsuario.retrofit.create(apiReservas.class);
-        Call<ArrayList<Reserva>> respuesta1 = api.obtenerReservas(idUsuario);
+        Call<ArrayList<Reserva>> respuesta1 = api.obtenerReservasMesUsuario(mes,año,actividadConUsuario.usuario.getId());
 
         respuesta1.enqueue(new Callback<ArrayList<Reserva>>() {
             @Override
