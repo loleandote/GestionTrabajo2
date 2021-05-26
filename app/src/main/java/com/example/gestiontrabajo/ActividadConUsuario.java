@@ -121,6 +121,7 @@ public class ActividadConUsuario extends AppCompatActivity {
                     drawerLayout.openDrawer(GravityCompat.START);
                 }
         }
+        //iugkb
         return super.onOptionsItemSelected(item);
     }
 
