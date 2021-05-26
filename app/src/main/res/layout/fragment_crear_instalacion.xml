@@ -39,13 +39,15 @@
                 android:id="@+id/textView12"
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
+                android:gravity="center_vertical"
                 android:text="tipo"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/textView6" />
+                app:layout_constraintTop_toBottomOf="@+id/textView6"
+                />
 
             <Spinner
                 android:id="@+id/tipoInstalacionSpinner"
-                android:layout_width="100dp"
+                android:layout_width="150dp"
                 android:layout_height="45dp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/nombreInstalacionEditText" />
@@ -55,6 +57,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="45dp"
                 android:text="Precio hora"
+                android:gravity="center_vertical"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/textView12" />
 

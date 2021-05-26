@@ -38,17 +38,18 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.MiViewHo
     }
     @Override
     public void onBindViewHolder(@NonNull ReservaAdapter.MiViewHolder holder, int postion){
-       /* System.out.println(lista.size());
-        System.out.println(postion);*/
-        //new DownloadImageTask(holder.imagenView).execute(lista.get(postion).getImagen_instalacion());
         Reserva reserva =lista.get(postion);
-        Picasso.get().load(reserva.getImagen_instalacion())
-                .placeholder(R.drawable.icons8_squats_30)
-                .error(R.drawable.icons8_error_cloud_48)
-                //.resize(80,60)
-                //.centerCrop()
-                .into(holder.imagenView);
-        String texto = String.valueOf(reserva.getId_instalacion());
+        try {
+            Picasso.get().load(reserva.getImagen_instalacion())
+                    .placeholder(R.drawable.icons8_squats_30)
+                    .error(R.drawable.icons8_error_cloud_48)
+                    //.resize(80,60)
+                    //.centerCrop()
+                    .into(holder.imagenView);
+        }catch (IllegalArgumentException exception){
+            System.out.println(exception.getMessage());
+        }
+        String texto = String.valueOf(reserva.getNombre_instalacion());
         //Integer nombre = lista.get(postion).getId_reserva();
         holder.nombreTextView.setText(texto);
         String descripcion = String.valueOf(reserva.getDia())+"/"+String.valueOf(reserva.getMes())+"/"+String.valueOf(reserva.getAnyo());
@@ -87,25 +88,3 @@ public class ReservaAdapter extends RecyclerView.Adapter<ReservaAdapter.MiViewHo
             this.canceladoTextView = itemView.findViewById(R.id.cancelado_lista);
         }
     }}
-    /*private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-        public DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap bmp = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                bmp = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
-                e.printStackTrace();
-            }
-            return bmp;
-        }
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
-        }
-    }*/

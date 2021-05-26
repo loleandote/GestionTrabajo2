@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.Conexión.apiUsuario;
@@ -64,6 +65,21 @@ public class FragmentConfiguracionPerfil extends Fragment {
                 });
             }
         });
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+
+                FragmentPerfil fragmentPerfil= new FragmentPerfil(actividadConUsuario);
+                actividadConUsuario.cambiarFragmento(fragmentPerfil);
+              /*  getActivity().finishAffinity();
+                System.exit(0);*/
+                // getActivity().finishAffinity();
+                // Handle the back button event
+                //
+
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return vista;
     }
 }

@@ -45,8 +45,6 @@ public class FragmentReserva extends Fragment{
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         vista= inflater.inflate(R.layout.fragment_reserva, container, false);
-
-
         imagenReserva = vista.findViewById(R.id.ReservaImagen);
         Picasso.get().load(reserva.getImagen_instalacion())
                 .placeholder(R.drawable.icons8_squats_30)
@@ -88,7 +86,8 @@ public class FragmentReserva extends Fragment{
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario);
+                if (fragmentReservas == null)
+                    fragmentReservas = new FragmentReservas(actividadConUsuario);
                 actividadConUsuario.cambiarFragmento(fragmentReservas);
             }
         };

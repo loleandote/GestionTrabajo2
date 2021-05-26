@@ -13,6 +13,9 @@ public class Reserva {
     @SerializedName("id_instalacion")
     @Expose
     private int id_instalacion;
+    @SerializedName("nombre_instalacion")
+    @Expose
+    private String nombre_instalacion;
     @SerializedName("imagen_instalacion")
     @Expose
     private String imagen_instalacion;
@@ -22,7 +25,7 @@ public class Reserva {
     @SerializedName("mes")
     @Expose
     private int mes;
-    @SerializedName("año")
+    @SerializedName("anyo")
     @Expose
     private int anyo;
     @SerializedName("hora_inicio")
@@ -50,10 +53,12 @@ public class Reserva {
     public Reserva() {
     }
 
-    public Reserva(int id, int id_usuario, int id_instalacion, String imagen_instalacion, int dia, int mes, int anyo, int hora_inicio, int hora_fin, int precio, boolean cancel_usu, boolean cancel_admin, boolean no_acude, boolean pagado) {
+
+    public Reserva(int id, int id_usuario, int id_instalacion, String nombre_instalacion, String imagen_instalacion, int dia, int mes, int anyo, int hora_inicio, int hora_fin, int precio, boolean cancel_usu, boolean cancel_admin, boolean no_acude, boolean pagado) {
         this.id = id;
         this.id_usuario = id_usuario;
         this.id_instalacion = id_instalacion;
+        this.nombre_instalacion = nombre_instalacion;
         this.imagen_instalacion = imagen_instalacion;
         this.dia = dia;
         this.mes = mes;
@@ -66,8 +71,6 @@ public class Reserva {
         this.no_acude = no_acude;
         this.pagado = pagado;
     }
-
-
 
     public int getId() {
         return id;
@@ -181,4 +184,11 @@ public class Reserva {
         this.pagado = pagado;
     }
 
+    public String getNombre_instalacion() {
+        return nombre_instalacion;
+    }
+
+    public void setNombre_instalacion(String nombre_instalacion) {
+        this.nombre_instalacion = nombre_instalacion;
+    }
 }

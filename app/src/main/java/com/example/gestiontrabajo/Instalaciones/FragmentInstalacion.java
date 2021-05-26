@@ -13,6 +13,8 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Spinner;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.annotation.RequiresApi;
@@ -29,6 +31,8 @@ import com.example.gestiontrabajo.Datos.Reserva;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.R;
 import com.example.gestiontrabajo.Reservas.FragmentReservas;
+import com.example.gestiontrabajo.Usuarios.FragmentUsuario;
+import com.example.gestiontrabajo.Usuarios.FragmentUsuarios;
 import com.squareup.picasso.Picasso;
 
 import java.time.LocalDate;
@@ -56,25 +60,60 @@ public class FragmentInstalacion extends Fragment {
     private ImagenInstalacionAdapter imagenInstalacionAdapter;
     private int imagenPulsada;
     private ImageView imageView;
+    private int i=0;
+    FragmentInstalaciones fragmentInstalaciones;
+    public TextView usuarioSeleccionado;
+    private boolean reservarAMi;
 
+    public Usuario getUsuario() {
+        return usuario;
+    }
+
+    public void setUsuario(Usuario usuario) {
+        this.usuario = usuario;
+        usuarioSeleccionado.setText(usuario.getNombre_usuario());
+    }
+
+    private Usuario usuario= new Usuario();
     public FragmentInstalacion() {
         // Required empty public constructor
     }
 
-    public FragmentInstalacion(ActividadConUsuario actividadConUsuario) {
+
+    public FragmentInstalacion(ActividadConUsuario actividadConUsuario,FragmentInstalaciones fragmentInstalaciones) {
         this.actividadConUsuario = actividadConUsuario;
+        this.fragmentInstalaciones= fragmentInstalaciones;
+    }
+
+    public FragmentInstalacion(ActividadConUsuario actividadConUsuario,FragmentInstalaciones fragmentInstalaciones, boolean reservarAMi) {
+        this.actividadConUsuario = actividadConUsuario;
+        this.fragmentInstalaciones= fragmentInstalaciones;
+        this.reservarAMi= reservarAMi;
     }
 
 
-    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_instalacion, container, false);
         reservasDia = new ArrayList<>();
         horaInicio=0;
         horaFin=0;
+        usuarioSeleccionado = vista.findViewById(R.id.NombreUsuarioReserva);
+        if (i==0)
+        cambiarUsuario("Selecciona un usuario");
+        i=1;
+        usuarioSeleccionado.setText(usuario.getNombre_usuario());
+        if(reservarAMi){
+            usuarioSeleccionado.setVisibility(View.GONE);
+            usuario= actividadConUsuario.usuario;
+        }
+        usuarioSeleccionado.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                irAFragmentUsuario();
+            }
+        });
         imageView = vista.findViewById(R.id.InstalacionImagen);
         try {
             Picasso.get().load(instalación.getImagenes().get(0))
@@ -84,18 +123,18 @@ public class FragmentInstalacion extends Fragment {
         }catch (IllegalArgumentException exception){
             System.out.println(exception.getMessage());
         }
-        LocalDate fecha = LocalDate.now();
-        String dia2= String.valueOf(fecha.getDayOfMonth());
-        diaNumero=fecha.getDayOfMonth();
-        if (fecha.getDayOfMonth()<10){
+        Date fecha =new Date();
+        String dia2= String.valueOf(fecha.getDate());
+        diaNumero=fecha.getDate();
+        if (fecha.getDate()<10){
             dia2="0"+dia2;
         }
-        String mes= String.valueOf(fecha.getMonthValue());
-        mesNumero=fecha.getMonthValue();
-        if(fecha.getMonthValue()<10){
+        String mes= String.valueOf(fecha.getMonth());
+        mesNumero=fecha.getMonth();
+        if(fecha.getMonth()<10){
             mes="0"+mes;
         }
-        dia = dia2+"-"+mes+"-"+String.valueOf(fecha.getYear());
+        dia = dia2+"-"+mes+"-"+String.valueOf(fecha.getYear()+1900);
         añoNumero=fecha.getYear();
 
         DiaEditText = vista.findViewById(R.id.DiaEditText);
@@ -117,7 +156,6 @@ public class FragmentInstalacion extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 horaInicio = listaInicio.get(position);
-                //System.out.println(position);
             }
 
             @Override
@@ -161,29 +199,51 @@ public class FragmentInstalacion extends Fragment {
             public void onClick(View v) {
                 apiReservas apiReservas = actividadConUsuario.retrofit.create(apiReservas.class);
                 int diferencia = horaFin - horaInicio;
-                if (horaInicio>0 && horaFin>0&& diferencia > 0 && diferencia < 3) {
-                    System.out.println(diferencia);
+
+                System.out.println(horaFin);
+                System.out.println(diferencia);
+                System.out.println(instalación.getTiempo_max_reserva());
+                if (horaInicio>0 && horaFin>0&& diferencia > 0 && diferencia <= instalación.getTiempo_max_reserva()) {
                     int precio = diferencia*instalación.getPrecio_hora();
-                    Call<Reserva> respuesta = apiReservas.guardaReserva(actividadConUsuario.usuario.getId(), instalación.getId(), instalación.getImagenes().get(0), diaNumero,mesNumero, añoNumero, horaInicio, horaFin, precio,false, false, true);
+                    int id=0;
+                    if (reservarAMi)
+                        id=actividadConUsuario.usuario.getId();
+                    else
+                        if (usuario.getId()>0)
+                        id=usuario.getId();
+                        System.out.println(String.valueOf(id)+"adios");
+                        if (id >0){
+                    Call<Reserva> respuesta = apiReservas.guardaReserva(id, instalación.getId(), instalación.getImagenes().get(0),instalación.getNombre(), diaNumero,mesNumero, añoNumero+1900, horaInicio, horaFin, precio,false, false, true);
                     respuesta.enqueue(new Callback<Reserva>() {
                         @Override
                         public void onResponse(Call<Reserva> call, Response<Reserva> response) {
-                            actualizarSaldoUsuario();
+                            if (response.isSuccessful()) {
+                                if (usuario.isEs_cliente())
+                                    actualizarSaldoUsuario();
+                                else {
+                                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                                    actividadConUsuario.cambiarFragmento(fragmentReservas);
+                                }
+                            }
                         }
 
                         @Override
                         public void onFailure(Call<Reserva> call, Throwable t) {
-
+                            System.out.println(t.getMessage());
                         }
                     });
+                        }
+                        else {
+                            Toast.makeText(getActivity(), "No se ha realizado la reserva",Toast.LENGTH_LONG).show();
+                            actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
+                           // Toast.makeText(getActivity(),"nada",Toast.LENGTH_LONG).show();
+                        }
                 }
             }
         });
-        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+        OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
-                FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario);
                 actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
             }
         };
@@ -198,16 +258,12 @@ public class FragmentInstalacion extends Fragment {
                 Date fecha = new Date(year,month+1, day);
                 Date fechaActual = new Date();
                 if(fecha.compareTo(fechaActual)>0){
-                    long diffInDays = ( (fecha.getTime() - fechaActual.getTime())
-                    );
+                    long diffInDays = ( (fecha.getTime() - fechaActual.getTime()));
                     double diferencia = Math.floor(diffInDays/(1000*3600*24));
                     diferencia= diferencia-693987;
-                    System.out.println(diferencia);
-                    System.out.println(String.valueOf(day + "-" + (month+1) + "-" + year));
                     diaNumero= day;
                     mesNumero =month+1;
                     añoNumero=year;
-                    System.out.println(fecha.getDay()+"-"+fecha.getMonth()+"-"+fecha.getYear());
                     String mes = String.valueOf(month+1);
                     String dia2= String.valueOf(day);
                     if (diferencia<=14 && diferencia>0){
@@ -223,6 +279,7 @@ public class FragmentInstalacion extends Fragment {
                         DiaEditText.setText(dia);
                         listaInicio= new ArrayList<>();
                         listaInicio =instalación.getHorario();
+
                         listaFin= new ArrayList<>();
                         for( int i =0; i<listaInicio.size();i++){
                             listaFin.add(listaInicio.get(i)+1);
@@ -257,18 +314,21 @@ public class FragmentInstalacion extends Fragment {
     }
     private void obtenerReservasDia(){
         apiReservas apiReservas= actividadConUsuario.retrofit.create(apiReservas.class);
-        Call<ArrayList<Reserva>>respuesta = apiReservas.obtenerReservas(diaNumero,mesNumero,añoNumero);
+        Call<ArrayList<Reserva>>respuesta = apiReservas.obtenerReservasDiaInstalacion(diaNumero,mesNumero,añoNumero, instalación.getId());
         respuesta.enqueue(new Callback<ArrayList<Reserva>>() {
             @Override
             public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
                 reservasDia=response.body();
-                System.out.println(response.body().size());
+                if (response.body().size()>0)
                 for (int i=0;i<response.body().size();i++){
                     int diferencia = response.body().get(i).getHora_fin()-response.body().get(i).getHora_inicio();
                     for(int j=0;j<diferencia;j++) {
                         int posicion = listaInicio.indexOf(response.body().get(i).getHora_inicio() + j);
-                        listaInicio.remove(posicion);
-                        listaFin.remove(posicion);
+                        if (posicion>=0) {
+                            listaInicio.remove(posicion);
+                            listaFin.remove(posicion);
+                        }
+
                     }
                 }
                 ActualizarListas();
@@ -283,12 +343,25 @@ public class FragmentInstalacion extends Fragment {
 
     private  void ActualizarListas()
     {
-        horaInicio= listaInicio.get(0);
-        ArrayAdapter<Integer> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaInicio);
-        reservasInicioDisponibles.setAdapter(listaAdapter);
-        reservasFinDisponibles = vista.findViewById(R.id.reservasFinDisponibles);
-        horaFin= listaFin.get(0);
-        ArrayAdapter<Integer> listaAdapterFin = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaFin);
-        reservasFinDisponibles.setAdapter(listaAdapterFin);
+        if (listaInicio.size()>0) {
+            horaInicio = listaInicio.get(0);
+            ArrayAdapter<Integer> listaAdapter = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaInicio);
+            reservasInicioDisponibles.setAdapter(listaAdapter);
+            reservasFinDisponibles = vista.findViewById(R.id.reservasFinDisponibles);
+            horaFin = listaFin.get(0);
+            ArrayAdapter<Integer> listaAdapterFin = new ArrayAdapter(getActivity(), android.R.layout.simple_spinner_dropdown_item, listaFin);
+            reservasFinDisponibles.setAdapter(listaAdapterFin);
+        }
+        else
+            Toast.makeText(getActivity(),"No hay horas disponibles",Toast.LENGTH_LONG).show();
+    }
+
+    private void irAFragmentUsuario(){
+        FragmentUsuarios fragmentUsuarios = new FragmentUsuarios(actividadConUsuario, this);
+        actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+    }
+
+    public void cambiarUsuario(String nombre_usuario){
+        usuario.setNombre_usuario(nombre_usuario);
     }
 }

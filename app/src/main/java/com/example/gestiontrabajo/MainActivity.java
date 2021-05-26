@@ -23,7 +23,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         String idioma =CargarIdioma();
-        System.out.println(idioma);
         if (idioma.length()>0)
         {
             Locale locale = new Locale(idioma);

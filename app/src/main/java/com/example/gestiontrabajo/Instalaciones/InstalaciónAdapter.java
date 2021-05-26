@@ -1,6 +1,7 @@
 package com.example.gestiontrabajo.Instalaciones;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,10 +21,12 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
     ArrayList<Instalación> lista;
     private Context context;
     private View.OnClickListener onClickListener;
+    private String[]listaTipos;
 
-    public InstalaciónAdapter(Context context) {
+    public InstalaciónAdapter(Context context, String[]listaTipos) {
         lista= new ArrayList<>();
         this.context = context;
+        this.listaTipos=listaTipos;
     }
 
     @NonNull
@@ -34,6 +37,9 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
         View view=inflater.inflate(R.layout.elementos_lista_instalacion,viewGroup,false);
         view.setOnClickListener(this.onClickListener);
         MiViewHolder miViewHolder= new MiViewHolder(view);
+
+
+
         return miViewHolder;
     }
 
@@ -53,7 +59,8 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
             System.out.println(exception.getMessage());
         }
         holder.nombreTextView.setText(lista.get(position).getNombre());
-        String tipo = String.valueOf(lista.get(position).getTipo());
+        String tipo = listaTipos[lista.get(position).getTipo()];
+        //String tipo = String.valueOf(lista.get(position).getTipo());
         holder.tipoTextView.setText(tipo);
     }
 

@@ -23,4 +23,7 @@
     <style name="SwitchRol">
         <item name="android:layout_margin">35dp</item>
     </style>
+    <style name="ConstraintUsuario">
+        <item name="android:layout_marginTop">20dp</item>
+    </style>
 </resources>

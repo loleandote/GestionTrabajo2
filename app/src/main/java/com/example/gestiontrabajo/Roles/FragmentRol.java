@@ -54,7 +54,7 @@ public class FragmentRol extends Fragment {
         if(rol!=null){
             nombre.setText(rol.getNombre_rol());
             rango3.setText(String.valueOf(rol.getRango_rol()));
-            reservar.setChecked(rol.isRealizar_reservas());
+            reservar.setChecked(rol.isRealiza_reservas());
             CambiarContraseña.setChecked(rol.isCambiar_contraseña());
             ModificarRol.setChecked(rol.isMod_rol());
             ImportarExportarInf.setChecked(rol.isImp_exp());
@@ -80,7 +80,7 @@ public class FragmentRol extends Fragment {
                if (crear){
                     //Crea rol
                     apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-                    Call<Rol> respuesta = apiRol.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealizar_reservas(),rol.isCambiar_contraseña(),rol.isMod_usu(),rol.isMod_rol(),rol.isImp_exp());
+                    Call<Rol> respuesta = apiRol.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealiza_reservas(),rol.isCambiar_contraseña(),rol.isMod_usu(),rol.isMod_rol(),rol.isImp_exp());
                     respuesta.enqueue(new Callback<Rol>() {
                         @Override
                         public void onResponse(Call<Rol> call, Response<Rol> response) {

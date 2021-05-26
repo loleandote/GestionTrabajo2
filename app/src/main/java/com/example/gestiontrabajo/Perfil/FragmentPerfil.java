@@ -75,8 +75,9 @@ public class FragmentPerfil extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+
                 getActivity().finishAffinity();
-                System.exit(0);
+                //System.exit(0);
                 // getActivity().finishAffinity();
                 // Handle the back button event
                 //

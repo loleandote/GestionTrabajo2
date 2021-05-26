@@ -57,7 +57,6 @@ public class FragmentRegistro extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
                 FragmentLogin fragmentLogin = new FragmentLogin(mainActivity);
                 mainActivity.cambiarFragmento(fragmentLogin);
             }
@@ -89,10 +88,7 @@ public class FragmentRegistro extends Fragment {
     private void guardarUsuario(String nombre, String contraseña, String correo){
         apiUsuario apiUsuario = mainActivity.retrofit.create(com.example.gestiontrabajo.Conexión.apiUsuario.class);
         Date fechavalor= new Date();
-        String fecha=String.valueOf(fechavalor.getDay()+"-"+fechavalor.getMonth()+"-"+fechavalor.getYear());
-        ArrayList<String> observaciones = new ArrayList<>();
-        observaciones.add("");
-        Call<Usuario> respuesta = apiUsuario.guardaUsuario(nombre, contraseña, correo,fecha,100, observaciones,false,"",1);
+        Call<Usuario> respuesta = apiUsuario.guardaUsuario(nombre, contraseña, correo,fechavalor.getDay(),fechavalor.getMonth(),fechavalor.getYear()+1900 ,100,false,0,0,0,1);
         respuesta.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {

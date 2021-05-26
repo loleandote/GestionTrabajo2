@@ -7,7 +7,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
@@ -19,6 +21,7 @@ import com.example.gestiontrabajo.Conexión.apiInstalaciones;
 import com.example.gestiontrabajo.Datos.Instalación;
 import com.example.gestiontrabajo.R;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -35,6 +38,7 @@ public class FragmentInstalaciones extends Fragment {
     private RecyclerView recyclerView;
     public InstalaciónAdapter instalaciónAdapter;
     private int instalacionPulsada;
+    private SwitchMaterial reservarAMi;
     public FragmentInstalaciones() {
         // Required empty public constructor
     }
@@ -49,6 +53,10 @@ public class FragmentInstalaciones extends Fragment {
         vista= inflater.inflate(R.layout.fragment_instalaciones, container, false);
         Spinner orden = vista.findViewById(R.id.OpcionesOrdenInstalciones);
         Spinner tipo = vista.findViewById(R.id.TiposInstalciones);
+        reservarAMi = vista.findViewById(R.id.reservarAMi);
+        if (!actividadConUsuario.rol.isRealiza_reservas() || !actividadConUsuario.rol.isRealiza_reservas_otros()){
+            reservarAMi.setVisibility(View.GONE);
+        }
         orden.setSelection(1);
         Resources res = getResources();
         String[] opcion = res.getStringArray(R.array.OpcionesOrdenarIntalaciones);
@@ -106,20 +114,18 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
         String[] tiposLengua = res.getStringArray(R.array.TiposInstalaciones);
-        String[] tipos ={"Todas", "Tenis", "baloncesto"};
+       // String[] tipos ={"Todas", "Tenis", "baloncesto"};
         ArrayAdapter<String>listaTiposAdapter = new ArrayAdapter(getActivity(),android.R.layout.simple_spinner_dropdown_item, tiposLengua);
         //tipo.setSelection(1);
         tipo.setAdapter(listaTiposAdapter);
         tipo.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                System.out.println("llegado");
                 if (position==0){
                     obtenerDatos();
                 }else
                 {
-                    String tipo = tipos[position];
-                    obtenerDatosPorTipo(tipo);
+                    obtenerDatosPorTipo(position);
                 }
             }
 
@@ -133,15 +139,14 @@ public class FragmentInstalaciones extends Fragment {
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-        instalaciónAdapter = new InstalaciónAdapter(getActivity());
+        instalaciónAdapter = new InstalaciónAdapter(getActivity(), tiposLengua);
         recyclerView.setAdapter(instalaciónAdapter);
         instalaciónAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 instalacionPulsada= recyclerView.getChildAdapterPosition(v);
-                Instalación instalación =instalaciónAdapter.lista.get(instalacionPulsada);
-                System.out.println(instalación.getNombre());
-                seleccionarInstalacion(instalación);
+                    Instalación instalación = instalaciónAdapter.lista.get(instalacionPulsada);
+                    seleccionarInstalacion(instalación);
             }
         });
         FloatingActionButton IrACrearInstalacion = vista.findViewById(R.id.IrAñadirPista);
@@ -172,8 +177,7 @@ public class FragmentInstalaciones extends Fragment {
             public void onResponse(Call<ArrayList<Instalación>> call, Response<ArrayList<Instalación>> response) {
                 if (response.isSuccessful()){
                     ArrayList<Instalación>listaInstalaciones = response.body();
-                    System.out.println(listaInstalaciones.size());
-                    System.out.println(listaInstalaciones.get(1).getNombre());
+
                     instalaciónAdapter.anyadirALista(listaInstalaciones);
                 }
             }
@@ -184,7 +188,7 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
     }
-    private void  obtenerDatosPorTipo(String tipo){
+    private void  obtenerDatosPorTipo(int tipo){
         apiInstalaciones apiInstalaciones = actividadConUsuario.retrofit.create(apiInstalaciones.class);
         Call<ArrayList<Instalación>> respuesta = apiInstalaciones.obtenerInstalacionesPorTipo(tipo);
         respuesta.enqueue(new Callback<ArrayList<Instalación>>() {
@@ -202,9 +206,10 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
     }
-    private void seleccionarInstalacion(Instalación instalacion){
-        FragmentInstalacion fragmentInstalacion= new FragmentInstalacion(actividadConUsuario);
-        fragmentInstalacion.instalación= instalacion;
+    private void seleccionarInstalacion(Instalación instalacion) {
+            FragmentInstalacion fragmentInstalacion = new FragmentInstalacion(actividadConUsuario, this, reservarAMi.isChecked());
+        fragmentInstalacion.instalación = instalacion;
         actividadConUsuario.cambiarFragmento(fragmentInstalacion);
+
     }
 }

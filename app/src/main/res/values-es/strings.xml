@@ -51,4 +51,8 @@
     <string name="Roles">Roles</string>
     <string name="Usuario">Usuario</string>
     <string name="Guardar">Guardar</string>
+    <string name="MisReservas">Mis Reservas</string>
+    <string name="EsCliente">Es cliente</string>
+    <string name="Penalizado">Penalizado</string>
+    <string name="Rol">Rol</string>
 </resources>

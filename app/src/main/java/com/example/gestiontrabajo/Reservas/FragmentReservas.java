@@ -44,13 +44,24 @@ public class FragmentReservas extends Fragment {
     public ReservaAdapter reservaAdapter;
     private EditText reservaFechaInicio;
     private EditText reservaFechaFin;
+    private boolean soloYo;
     public FragmentReservas() {
         // Required empty public constructor
+    }
+
+    public FragmentReservas(boolean soloYo) {
+        this.soloYo= soloYo;
     }
 
     public FragmentReservas(ActividadConUsuario actividadConUsuario) {
         this.actividadConUsuario= actividadConUsuario;
     }
+
+    public FragmentReservas(ActividadConUsuario actividadConUsuario,boolean soloYo) {
+        this.actividadConUsuario= actividadConUsuario;
+        this.soloYo= soloYo;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -147,8 +158,15 @@ public class FragmentReservas extends Fragment {
             }
         });
         recyclerView.setAdapter(reservaAdapter);
-        obtenerDatos();
-        obtenerRoles();
+        if (soloYo) {
+            System.out.println("noadsf");
+            obtenerDatos(actividadConUsuario.usuario.getId());
+        }
+        else {
+            System.out.println("malo");
+            obtenerDatos();
+        }
+        //obtenerRoles();
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -194,12 +212,6 @@ public class FragmentReservas extends Fragment {
             public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
                 if(response.isSuccessful()) {
                     ArrayList<Reserva> listareservas = response.body();
-//                    Collections.sort(listapersonajes, new Comparator<Reserva>() {
-//                        @Override
-//                        public int compare(Reserva u1, Reserva u2) {
-//                            return u1.getCreatedOn().compareTo(u2.getCreatedOn());
-//                        }
-//                    });
                     reservaAdapter.anyadirALista(listareservas);
                 } else{
                     Toast.makeText(getActivity(), "Fallo en la respuesta", Toast.LENGTH_SHORT).show();
@@ -213,27 +225,29 @@ public class FragmentReservas extends Fragment {
             }
         });
     }
-    private void obtenerRoles(){
-        apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        List<Integer> lista= new ArrayList<>();
-        lista.add(1);
-        lista.add(2);
-        lista.add(3);
-        Call<ArrayList<Rol>> respuesta= apiRol.obtenerRoles(lista);
-        respuesta.enqueue(new Callback<ArrayList<Rol>>() {
+    private void  obtenerDatos(int idUsuario){
+        apiReservas api = actividadConUsuario.retrofit.create(apiReservas.class);
+        Call<ArrayList<Reserva>> respuesta1 = api.obtenerReservas(idUsuario);
+
+        respuesta1.enqueue(new Callback<ArrayList<Reserva>>() {
             @Override
-            public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {
-                if (response.isSuccessful()){
-                    System.out.println(response.body().size());
+            public void onResponse(Call<ArrayList<Reserva>> call, Response<ArrayList<Reserva>> response) {
+                if(response.isSuccessful()) {
+                    ArrayList<Reserva> listareservas = response.body();
+                    reservaAdapter.anyadirALista(listareservas);
+                } else{
+                    Toast.makeText(getActivity(), "Fallo en la respuesta", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
-            public void onFailure(Call<ArrayList<Rol>> call, Throwable t) {
-System.out.println(t.getMessage());
+            public void onFailure(Call<ArrayList<Reserva>> call, Throwable t) {
+                //Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
+                System.out.println(t.getMessage());
             }
         });
     }
+
     private void seleccionarReserva(Reserva reserva){
 
         FragmentReserva fragmentReserva = new FragmentReserva(actividadConUsuario,this);

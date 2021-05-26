@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -41,22 +42,27 @@ public class ActividadConUsuario extends AppCompatActivity {
     public Rol rol;
     public SharedPreferences propiedades;
     private Menu menu;
+    private Fragment fragmentActual;
+
+    public Fragment getFragmentAntiguo() {
+        return fragmentAntiguo;
+    }
+
+    public void setFragmentAntiguo(Fragment fragmentAntiguo) {
+        this.fragmentAntiguo = fragmentAntiguo;
+    }
+
+    private Fragment fragmentAntiguo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_con_usuario);
         propiedades =getBaseContext().getSharedPreferences("Idiomas",MODE_PRIVATE);
         retrofit= Cliente.obtenerCliente();
-        int id=1;
+        int id;
         id = getIntent().getIntExtra("usuario",0);
-        if(id==0)
-            id =1;
         obtenerUsuario(id);
-        FragmentReservas fragmentReservas = new FragmentReservas(this);
-        FragmentManager fragmentManager = getSupportFragmentManager();
-        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.add(R.id.frameLayoutPrincipal,fragmentReservas);
-        fragmentTransaction.commit();
+
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.icons8_menu_24);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -72,6 +78,10 @@ public class ActividadConUsuario extends AppCompatActivity {
                     case R.id.InstalacionesNavMenu:
                         fragmentTransaction= true;
                         fragment = new FragmentInstalaciones();
+                        break;
+                    case R.id.MisReservasNavMenu:
+                       fragmentTransaction = true;
+                        fragment = new FragmentReservas(true);
                         break;
                     case R.id.ReservasNavMenu:
                         fragmentTransaction= true;
@@ -120,9 +130,10 @@ public class ActividadConUsuario extends AppCompatActivity {
         listaUsuarios.enqueue(new Callback<ArrayList<Usuario>>() {
             @Override
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
-                if(response.body().size()>0)
+                if(response.body().size()>0) {
                     usuario = response.body().get(0);
-                obtenerRol(usuario.getCodigo_rol());
+                    obtenerRol(usuario.getCodigo_rol());
+                }
             }
 
             @Override
@@ -134,17 +145,27 @@ public class ActividadConUsuario extends AppCompatActivity {
 
     private void obtenerRol(int idRol){
         apiRol apiRol= retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        Call<Rol>RolUsuario = apiRol.obtenerRol(idRol);
-        RolUsuario.enqueue(new Callback<Rol>() {
+        Call<ArrayList<Rol>>RolUsuario = apiRol.obtenerRol(idRol);
+        RolUsuario.enqueue(new Callback<ArrayList<Rol>>() {
             @Override
-            public void onResponse(Call<Rol> call, Response<Rol> response) {
+            public void onResponse(Call<ArrayList<Rol>>call, Response<ArrayList<Rol>> response) {
                 if(response.isSuccessful()){
-                    rol= response.body();
+                    rol= response.body().get(0);
+                    FragmentReservas fragmentReservas;
+                    if(rol.isRealiza_reservas()){
+                        System.out.println("-----------------------------------------------------------------");
+                        fragmentReservas = new FragmentReservas( true);
+                        //cambiarFragmento(fragmentReservas);
+                    }
+                    else {
+                        fragmentReservas = new FragmentReservas();
+                    }
+                    cambiarFragmento(fragmentReservas);
                 }
             }
 
             @Override
-            public void onFailure(Call<Rol> call, Throwable t) {
+            public void onFailure(Call<ArrayList<Rol>> call, Throwable t) {
 
             }
         });
@@ -155,22 +176,23 @@ public class ActividadConUsuario extends AppCompatActivity {
         {
             ((FragmentInstalaciones) fragment).actividadConUsuario= this;
         }
-        else{
+        else {
             if (fragment instanceof FragmentReservas) {
                 ((FragmentReservas) fragment).actividadConUsuario = this;
             } else {
                 if (fragment instanceof FragmentPerfil) {
                     ((FragmentPerfil) fragment).actividadConUsuario = this;
-                }else{
-                    if (fragment instanceof FragmentRoles){
-                        ((FragmentRoles) fragment).actividadConUsuario= this;
-                    }
-                    else
-                        if (fragment instanceof FragmentUsuarios)
-                            ((FragmentUsuarios) fragment).actividadConUsuario= this;
+                } else {
+                    if (fragment instanceof FragmentRoles) {
+                        ((FragmentRoles) fragment).actividadConUsuario = this;
+                    } else if (fragment instanceof FragmentUsuarios)
+                        ((FragmentUsuarios) fragment).actividadConUsuario = this;
                 }
             }
         }
+        if (fragmentActual!= null)
+        fragmentAntiguo= fragmentActual;
+        fragmentActual = fragment;
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutPrincipal,fragment);
@@ -192,7 +214,7 @@ public class ActividadConUsuario extends AppCompatActivity {
 //        List<Object>listado = Arrays.asList(rol.getClass().getDeclaredFields());
         if(rol != null){
             for (int i=0; i<rol.getClass().getFields().length;i++)
-            if(rol.isRealizar_reservas())
+            if(rol.isRealiza_reservas()|| rol.isRealiza_reservas_otros())
                 menu.findItem(R.id.InstalacionesNavMenu).setVisible(true);
             if(rol.isMod_rol())
                 menu.findItem(R.id.RolesNavMenu).setVisible(true);

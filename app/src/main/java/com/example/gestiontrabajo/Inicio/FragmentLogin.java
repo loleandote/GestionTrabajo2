@@ -8,15 +8,20 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiUsuario;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.MainActivity;
+import com.example.gestiontrabajo.Perfil.FragmentPerfil;
 import com.example.gestiontrabajo.R;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -60,6 +65,13 @@ public class FragmentLogin extends Fragment {
                 mainActivity.cambiarFragmento(fragment_registro);
             }
         });
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                getActivity().finishAffinity();
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return vista;
     }
     private void obtenerUsuario(String nombre, String contraseña){
@@ -70,15 +82,44 @@ public class FragmentLogin extends Fragment {
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
                 ArrayList<Usuario> lista = response.body();
                 if(lista.size()>0){
-                    if(!lista.get(0).isPenalizado() && lista.get(0).getCodigo_rol()==1) {
+                    if (lista.get(0).isPenalizado()) {
+                            Date fecha = new Date (lista.get(0).getDia_fin_pena(), lista.get(0).getMes_fin_pena(), lista.get(0).getAnyo_fin_pena());
+                            Date hoy = new Date();
+                            if (fecha.compareTo(hoy) >= 0)
+                                quitarPena(lista.get(0), apiUsuario);
+
+                    }
+                    else
+                    if(!lista.get(0).isEs_cliente()) {
                         Usuario usuario = lista.get(0);
                         Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
                         intent.putExtra("usuario", usuario.getId());
                         startActivity(intent);
-
                     }
+
                 }
 
+            }
+
+            private void quitarPena(Usuario usuario, apiUsuario apiUsuario1){
+                usuario.setPenalizado(false);
+                Call<Usuario> respuesta = apiUsuario1.actualizarUsuario(usuario.getId(), usuario);
+                respuesta.enqueue(new Callback<Usuario>() {
+                    @Override
+                    public void onResponse(Call<Usuario> call, Response<Usuario> response) {
+                        if (response.isSuccessful()){
+                            Intent intent= new Intent(mainActivity, ActividadConUsuario.class);
+                            intent.putExtra("usuario", usuario.getId());
+                            startActivity(intent);
+
+                        }
+                    }
+
+                    @Override
+                    public void onFailure(Call<Usuario> call, Throwable t) {
+
+                    }
+                });
             }
 
             @Override
@@ -87,5 +128,6 @@ public class FragmentLogin extends Fragment {
                 System.err.println(String.valueOf(t.getCause()));
             }
         });
+
     }
 }

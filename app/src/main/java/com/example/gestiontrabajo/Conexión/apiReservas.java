@@ -19,9 +19,11 @@ public interface apiReservas {
     @GET("reservas")
     Call<ArrayList<Reserva>> obtenerReservas();
     @GET("reservas")
-    Call<ArrayList<Reserva>> obtenerReservas(@Query("id")int id);
+    Call<ArrayList<Reserva>> obtenerReservas(@Query("id_usuario")int id_usuario);
     @GET("reservas")
     Call<ArrayList<Reserva>> obtenerReservas(@Query("dia") int dia,@Query("mes") int mes,@Query("año") int año);
+    @GET("reservas")
+    Call<ArrayList<Reserva>> obtenerReservasDiaInstalacion(@Query("dia") int dia,@Query("mes") int mes,@Query("año") int año, @Query("id_instalacion")int id_instalacion);
 
     @FormUrlEncoded
     @POST("reservas")
@@ -29,9 +31,10 @@ public interface apiReservas {
             @Field("id_usuario") int id_usuario,
             @Field("id_instalacion") int id_instalacion,
             @Field("imagen_instalacion") String imagen_instalacion,
+            @Field("nombre_instalacion") String nombre_instalacion,
             @Field("dia") int dia,
             @Field("mes") int mes,
-            @Field("año") int año,
+            @Field("anyo") int anyo,
             @Field("hora_inicio") int hora_inicio,
             @Field("hora_fin") int hora_fin,
             @Field("precio") int precio,

@@ -20,18 +20,18 @@ public interface apiInstalaciones {
     @GET("instalaciones")
     Call<ArrayList<Instalación>> obtenerInstalaciones();
     @GET("instalaciones")
-    Call<ArrayList<Instalación>> obtenerInstalacionesPorTipo(@Query("tipo")String tipo);
+    Call<ArrayList<Instalación>> obtenerInstalacionesPorTipo(@Query("tipo")int tipo);
 
     @PUT("instalaciones/{id}")
     Call<Instalación> actualizarInstalacion(@Path("id") int id, @Body Instalación instalación);
     @FormUrlEncoded
     @POST("instalaciones")
     Call<Instalación> guardaInstalacion(
-            @Field("tipo") String tipo,
+            @Field("tipo") int tipo,
             @Field("nombre") String nombre,
             @Field("precio_hora") long precio_hora,
-            @Field("tiempo_min") long tiempo_min,
-            @Field("tiempo_max") long tiempo_max,
+            @Field("tiempo_min_reserva") long tiempo_min_reserva,
+            @Field("tiempo_max_reserva") long tiempo_max_reserva,
             @Field("imagenes")ArrayList<String>imagenes,
             @Field("horario") ArrayList<Integer> horario
     );

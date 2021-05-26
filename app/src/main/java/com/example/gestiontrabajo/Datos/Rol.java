@@ -13,9 +13,12 @@ public class Rol {
     @SerializedName("nombre_rol")
     @Expose
     private String nombre_rol;
-    @SerializedName("realizar_reservas")
+    @SerializedName("realiza_reservas")
     @Expose
-    private boolean realizar_reservas;
+    private boolean realiza_reservas;
+    @SerializedName("realiza_reservas_otros")
+    @Expose
+    private boolean realiza_reservas_otros;
     @SerializedName("cambiar_contraseña")
     @Expose
     private boolean cambiar_contraseña;
@@ -33,15 +36,32 @@ public class Rol {
     public Rol() {
     }
 
-    public Rol(int id, int rango_rol, String nombre_rol, boolean realizar_reservas, boolean cambiar_contraseña, boolean mod_usu, boolean mod_rol, boolean imp_exp) {
+    public Rol(int id, int rango_rol, String nombre_rol, boolean realiza_reservas, boolean realiza_reservas_otros, boolean cambiar_contraseña, boolean mod_usu, boolean mod_rol, boolean imp_exp) {
         this.id = id;
         this.rango_rol = rango_rol;
         this.nombre_rol = nombre_rol;
-        this.realizar_reservas = realizar_reservas;
+        this.realiza_reservas = realiza_reservas;
+        this.realiza_reservas_otros = realiza_reservas_otros;
         this.cambiar_contraseña = cambiar_contraseña;
         this.mod_usu = mod_usu;
         this.mod_rol = mod_rol;
         this.imp_exp = imp_exp;
+    }
+
+    public boolean isRealiza_reservas() {
+        return realiza_reservas;
+    }
+
+    public void setRealiza_reservas(boolean realiza_reservas) {
+        this.realiza_reservas = realiza_reservas;
+    }
+
+    public boolean isRealiza_reservas_otros() {
+        return realiza_reservas_otros;
+    }
+
+    public void setRealiza_reservas_otros(boolean realiza_reservas_otros) {
+        this.realiza_reservas_otros = realiza_reservas_otros;
     }
 
     public int getId() {
@@ -58,14 +78,6 @@ public class Rol {
 
     public void setNombre_rol(String nombre_rol) {
         this.nombre_rol = nombre_rol;
-    }
-
-    public boolean isRealizar_reservas() {
-        return realizar_reservas;
-    }
-
-    public void setRealizar_reservas(boolean realizar_reservas) {
-        this.realizar_reservas = realizar_reservas;
     }
 
     public boolean isCambiar_contraseña() {

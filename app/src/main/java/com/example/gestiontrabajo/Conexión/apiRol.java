@@ -21,7 +21,7 @@ public interface apiRol {
     @GET("roles")
     Call<ArrayList<Rol>> obtenerRoles(@Query("rango_rol")List<Integer>lista);
     @GET("roles")
-    Call<Rol> obtenerRol(@Query("id")int id);
+    Call<ArrayList<Rol>> obtenerRol(@Query("id")int id);
     @FormUrlEncoded
     @POST("roles")
     Call<Rol> guardaRol(
