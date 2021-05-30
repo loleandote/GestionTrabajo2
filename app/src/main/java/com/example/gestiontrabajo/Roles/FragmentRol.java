@@ -55,9 +55,9 @@ public class FragmentRol extends Fragment {
             nombre.setText(rol.getNombre_rol());
             rango3.setText(String.valueOf(rol.getRango_rol()));
             reservar.setChecked(rol.isRealiza_reservas());
-            CambiarContraseña.setChecked(rol.isCambiar_contraseña());
-            ModificarRol.setChecked(rol.isMod_rol());
-            ImportarExportarInf.setChecked(rol.isImp_exp());
+           // CambiarContraseña.setChecked(rol.isCambiar_contraseña());
+            ModificarRol.setChecked(rol.isMod_permiso());
+            ImportarExportarInf.setChecked(rol.isExporta_importa());
         }
         Button guardarRol=vista.findViewById(R.id.GuardarRol);
         guardarRol.setOnClickListener(new View.OnClickListener() {
@@ -72,21 +72,20 @@ public class FragmentRol extends Fragment {
                 rol.setNombre_rol(String.valueOf(nombre.getText()));
                 int rango = Integer.parseInt(String.valueOf(rango3.getText()));
                 rol.setRango_rol(rango);
-                rol.setCambiar_contraseña(CambiarContraseña.isChecked());
-                rol.setMod_usu(ModificarUsuario.isChecked());
-                rol.setMod_rol(ModificarRol.isChecked());
-                rol.setImp_exp(ImportarExportarInf.isChecked());
+                //rol.setCambiar_contraseña(CambiarContraseña.isChecked());
+                rol.setModificar_usuario(ModificarUsuario.isChecked());
+                rol.setMod_permiso(ModificarRol.isChecked());
+                rol.setExporta_importa(ImportarExportarInf.isChecked());
                 //Guardar rol
                if (crear){
                     //Crea rol
                     apiRoles apiRoles = actividadConUsuario.retrofit.create(apiRoles.class);
-                    Call<Rol> respuesta = apiRoles.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealiza_reservas(),rol.isCambiar_contraseña(),rol.isMod_usu(),rol.isMod_rol(),rol.isImp_exp());
+                    Call<Rol> respuesta = apiRoles.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealiza_reservas(),rol.isRealiza_reservas_otros(),rol.isCancela_reserva(),rol.isModificar_usuario(),rol.isBaja_socio(),rol.isRealiza_informe(),rol.isVer_grafico(),rol.ismod_usuario_otros(),rol.isMod_permiso(),rol.isExporta_importa());
                     respuesta.enqueue(new Callback<Rol>() {
                         @Override
                         public void onResponse(Call<Rol> call, Response<Rol> response) {
                             if (response.isSuccessful()){
                                 FragmentRoles fragmentRoles = new FragmentRoles(actividadConUsuario);
-                                System.out.println("llego");
                                 actividadConUsuario.cambiarFragmento(fragmentRoles);
                             }
                         }
