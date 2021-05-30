@@ -15,7 +15,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
-public interface apiRol {
+public interface apiRoles {
     @GET("roles")
     Call<ArrayList<Rol>> obtenerRoles();
     @GET("roles")

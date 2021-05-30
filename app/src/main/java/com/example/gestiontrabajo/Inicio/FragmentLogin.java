@@ -12,14 +12,11 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Conexión.apiUsuario;
+import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.MainActivity;
-import com.example.gestiontrabajo.Perfil.FragmentPerfil;
 import com.example.gestiontrabajo.R;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -57,14 +54,7 @@ public class FragmentLogin extends Fragment {
             }
         });
         // Creo que lo voy a quitar, no tiene sentido poder crear un usuario de trabajo, para eso los admin podrán crearlo
-        Button registro = vista.findViewById(R.id.IrRegistroFragmentButton);
-        registro.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                FragmentRegistro fragment_registro = new FragmentRegistro(mainActivity);
-                mainActivity.cambiarFragmento(fragment_registro);
-            }
-        });
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -75,8 +65,8 @@ public class FragmentLogin extends Fragment {
         return vista;
     }
     private void obtenerUsuario(String nombre, String contraseña){
-        apiUsuario apiUsuario = mainActivity.retrofit.create(apiUsuario.class);
-        Call<ArrayList<Usuario>> respuesta= apiUsuario.obtenerUsuario(nombre, contraseña);
+        apiUsuarios apiUsuarios = mainActivity.retrofit.create(apiUsuarios.class);
+        Call<ArrayList<Usuario>> respuesta= apiUsuarios.obtenerUsuario(nombre, contraseña);
         respuesta.enqueue(new Callback<ArrayList<Usuario>>() {
             @Override
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
@@ -86,7 +76,7 @@ public class FragmentLogin extends Fragment {
                             Date fecha = new Date (lista.get(0).getDia_fin_pena(), lista.get(0).getMes_fin_pena(), lista.get(0).getAnyo_fin_pena());
                             Date hoy = new Date();
                             if (fecha.compareTo(hoy) >= 0)
-                                quitarPena(lista.get(0), apiUsuario);
+                                quitarPena(lista.get(0), apiUsuarios);
 
                     }
                     else
@@ -101,9 +91,9 @@ public class FragmentLogin extends Fragment {
 
             }
 
-            private void quitarPena(Usuario usuario, apiUsuario apiUsuario1){
+            private void quitarPena(Usuario usuario, apiUsuarios apiUsuarios1){
                 usuario.setPenalizado(false);
-                Call<Usuario> respuesta = apiUsuario1.actualizarUsuario(usuario.getId(), usuario);
+                Call<Usuario> respuesta = apiUsuarios1.actualizarUsuario(usuario.getId(), usuario);
                 respuesta.enqueue(new Callback<Usuario>() {
                     @Override
                     public void onResponse(Call<Usuario> call, Response<Usuario> response) {

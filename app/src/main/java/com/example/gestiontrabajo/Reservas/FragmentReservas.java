@@ -1,6 +1,5 @@
 package com.example.gestiontrabajo.Reservas;
 
-import android.app.DatePickerDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,8 +7,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
-import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -20,17 +17,15 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
-import com.example.gestiontrabajo.Conexión.apiRol;
-import com.example.gestiontrabajo.DatePickerFragment;
 import com.example.gestiontrabajo.Datos.Reserva;
-import com.example.gestiontrabajo.Datos.Rol;
+import com.example.gestiontrabajo.Instalaciones.FragmentInstalaciones;
 import com.example.gestiontrabajo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -204,10 +199,24 @@ public class FragmentReservas extends Fragment {
        else
             obtenerDatos();
 
+        FloatingActionButton IrAInstalaciones = vista.findViewById(R.id.IrAInstalaciones);
+        IrAInstalaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario,true);
+                actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
+            }
+        });
+
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+                if(soloYo)
                 getActivity().finishAffinity();
+                else {
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas);
+                }
                 // Handle the back button event
 
             }

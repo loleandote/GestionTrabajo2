@@ -20,6 +20,7 @@ import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiInstalaciones;
 import com.example.gestiontrabajo.Datos.Instalación;
 import com.example.gestiontrabajo.R;
+import com.example.gestiontrabajo.Reservas.FragmentReservas;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 
@@ -39,11 +40,13 @@ public class FragmentInstalaciones extends Fragment {
     public InstalaciónAdapter instalaciónAdapter;
     private int instalacionPulsada;
     private SwitchMaterial reservarAMi;
+    private boolean reservar;
     public FragmentInstalaciones() {
         // Required empty public constructor
     }
-    public FragmentInstalaciones(ActividadConUsuario actividadConUsuario) {
+    public FragmentInstalaciones(ActividadConUsuario actividadConUsuario, boolean reservar) {
         this.actividadConUsuario=actividadConUsuario;
+        this.reservar= reservar;
     }
 
 
@@ -54,7 +57,7 @@ public class FragmentInstalaciones extends Fragment {
         Spinner orden = vista.findViewById(R.id.OpcionesOrdenInstalciones);
         Spinner tipo = vista.findViewById(R.id.TiposInstalciones);
         reservarAMi = vista.findViewById(R.id.reservarAMi);
-        if (!actividadConUsuario.rol.isRealiza_reservas() || !actividadConUsuario.rol.isRealiza_reservas_otros()){
+        if (!actividadConUsuario.rol.isRealiza_reservas() || !actividadConUsuario.rol.isRealiza_reservas_otros()|| !reservar){
             reservarAMi.setVisibility(View.GONE);
         }
         orden.setSelection(1);
@@ -150,6 +153,8 @@ public class FragmentInstalaciones extends Fragment {
             }
         });
         FloatingActionButton IrACrearInstalacion = vista.findViewById(R.id.IrAñadirPista);
+        if(reservar)
+            IrACrearInstalacion.setVisibility(View.GONE);
         IrACrearInstalacion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -161,7 +166,8 @@ public class FragmentInstalaciones extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                getActivity().finishAffinity();
+                FragmentReservas fragmentReservas= new FragmentReservas(actividadConUsuario, true);
+                actividadConUsuario.cambiarFragmento(fragmentReservas);
                 // Handle the back button event
 
             }
@@ -207,9 +213,14 @@ public class FragmentInstalaciones extends Fragment {
         });
     }
     private void seleccionarInstalacion(Instalación instalacion) {
+        if(reservar){
             FragmentInstalacion fragmentInstalacion = new FragmentInstalacion(actividadConUsuario, this, reservarAMi.isChecked());
         fragmentInstalacion.instalación = instalacion;
-        actividadConUsuario.cambiarFragmento(fragmentInstalacion);
+        actividadConUsuario.cambiarFragmento(fragmentInstalacion);}
+        else{
+            FragmentCrearInstalacion fragmentCrearInstalacion = new FragmentCrearInstalacion(actividadConUsuario,instalacion);
+            actividadConUsuario.cambiarFragmento(fragmentCrearInstalacion);
+        }
 
     }
 }

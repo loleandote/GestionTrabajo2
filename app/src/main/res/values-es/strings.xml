@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">FuerzaLol</string>
+    <string name="app_name">GimnasioZucaritaPro</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <!--Textos FragmentLogin FragmentRegistro-->
     <string name="NombreLogin">nombre</string>
@@ -69,4 +69,14 @@
     <string name="EsCliente">Es cliente</string>
     <string name="Penalizado">Penalizado</string>
     <string name="Rol">Rol</string>
+    <string name="TituloObservaciones">Observaciones de</string>
+    <string name="NombreIncorrecto">Nombre incorrecto, debe tener entre 4 y 8 caracteres</string>
+    <string name="ContraseñaIncorrecta">Contraseña incorrecta, debe tener entre 8 y 16 caracteres</string>
+    <string name="CorreoIncorrecto">Correo incorrecto</string>
+    <string name="FechaIncorrecta">La fecha debe ser superior o igual a la actual</string>
+    <string name="Titulo">Titulo:</string>
+    <string name="Filtros">Filtros</string>
+    <string name="Observacion">Observación:</string>
+    <string name="ObservacionesDe">"Observaciones de "</string>
+    <string name="SeleccionarUsuario">"Clic aquí para seleccionar un usuario "</string>
 </resources>

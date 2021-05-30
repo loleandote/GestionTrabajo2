@@ -60,6 +60,15 @@ public class FragmentCrearInstalacion extends Fragment {
         EditText minimoInstalacion = vista.findViewById(R.id.TiempoMinimoEditText);
         EditText maximoInstalacion = vista.findViewById(R.id.TiempoMaximoEditText);
         Spinner tipo = vista.findViewById(R.id.tipoInstalacionSpinner);
+        if(instalación.getId()>0)
+        {
+            nombreInstalacion.setText(instalación.getNombre());
+            precioHora.setText(String.valueOf(instalación.getPrecio_hora()));
+            inicioInstalacion.setText(String.valueOf(instalación.getHorario().get(0)));
+            finInstalacion.setText(String.valueOf(instalación.getHorario().get(instalación.getHorario().size()-1)));
+            minimoInstalacion.setText(String.valueOf(instalación.getTiempo_min_reserva()));
+            maximoInstalacion.setText(String.valueOf(instalación.getTiempo_max_reserva()));
+        }
         Resources res = getResources();
         String[] tiposLengua = res.getStringArray(R.array.TiposInstalaciones);
         String[] tiposLengua2 = new String[tiposLengua.length-1];
@@ -117,8 +126,8 @@ public class FragmentCrearInstalacion extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                FragmentPerfil fragmentPerfil = new FragmentPerfil(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentPerfil);
+                FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario, false);
+                actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -131,7 +140,7 @@ public class FragmentCrearInstalacion extends Fragment {
             @Override
             public void onResponse(Call<Instalación> call, Response<Instalación> response) {
                 if (response.isSuccessful()){
-                    FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario);
+                    FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario, false);
                     actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
                 }
             }
@@ -149,7 +158,7 @@ public class FragmentCrearInstalacion extends Fragment {
             @Override
             public void onResponse(Call<Instalación> call, Response<Instalación> response) {
                 if (response.isSuccessful()){
-                    FragmentInstalaciones fragmentInstalaciones= new FragmentInstalaciones(actividadConUsuario);
+                    FragmentInstalaciones fragmentInstalaciones= new FragmentInstalaciones(actividadConUsuario, false);
                     actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
                 }
             }

@@ -37,9 +37,6 @@ public class InstalaciónAdapter extends RecyclerView.Adapter<InstalaciónAdapte
         View view=inflater.inflate(R.layout.elementos_lista_instalacion,viewGroup,false);
         view.setOnClickListener(this.onClickListener);
         MiViewHolder miViewHolder= new MiViewHolder(view);
-
-
-
         return miViewHolder;
     }
 

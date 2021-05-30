@@ -14,17 +14,16 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Conexión.apiRol;
-import com.example.gestiontrabajo.Conexión.apiUsuario;
+import com.example.gestiontrabajo.Conexión.apiRoles;
+import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.Instalaciones.FragmentInstalacion;
-import com.example.gestiontrabajo.Perfil.FragmentPerfil;
 import com.example.gestiontrabajo.R;
+import com.example.gestiontrabajo.Reservas.FragmentReservas;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -78,6 +77,8 @@ public class FragmentUsuarios extends Fragment {
             }
         });
         FloatingActionButton IrAñadirUsuario=vista.findViewById(R.id.IrAñadirUsuario);
+        if (fragmentInstalacion != null)
+            IrAñadirUsuario.setVisibility(View.GONE);
         IrAñadirUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -111,7 +112,11 @@ public class FragmentUsuarios extends Fragment {
             public void handleOnBackPressed() {
                 // Handle the back button event
                 if (fragmentInstalacion == null)
-                getActivity().finishAffinity();
+
+                {
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas);
+                }
                 else
                     actividadConUsuario.cambiarFragmento(fragmentInstalacion);
             }
@@ -126,13 +131,12 @@ public class FragmentUsuarios extends Fragment {
     }
 
     private void obtenerUsuarios(){
-        apiUsuario apiUsuario = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiUsuario.class);
-        Call<ArrayList<Usuario>>respuesta = apiUsuario.obtenerUsuariosPorRoles(listaRoles);
+        apiUsuarios apiUsuarios = actividadConUsuario.retrofit.create(apiUsuarios.class);
+        Call<ArrayList<Usuario>>respuesta = apiUsuarios.obtenerUsuariosPorRoles(listaRoles);
         respuesta.enqueue(new Callback<ArrayList<Usuario>>() {
             @Override
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
                 if (response.isSuccessful()){
-                    System.out.println(response.body().size());
                     usuarioAdapter.actualizarListaUsuarios(response.body());
                 }
             }
@@ -145,8 +149,8 @@ public class FragmentUsuarios extends Fragment {
     }
     private void obtenerUsuarios(int idRol)
     {
-        apiUsuario apiUsuario = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiUsuario.class);
-        Call<ArrayList<Usuario>>respuesta = apiUsuario.obtenerUsuariosPorRol(idRol);
+        apiUsuarios apiUsuarios = actividadConUsuario.retrofit.create(apiUsuarios.class);
+        Call<ArrayList<Usuario>>respuesta = apiUsuarios.obtenerUsuariosPorRol(idRol);
         respuesta.enqueue(new Callback<ArrayList<Usuario>>() {
             @Override
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
@@ -165,13 +169,12 @@ public class FragmentUsuarios extends Fragment {
     private  void obtenerRoles()
     {
 
-        apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        Call<ArrayList<Rol>>respuesta = apiRol.obtenerRoles(listaRoles);
+        apiRoles apiRoles = actividadConUsuario.retrofit.create(apiRoles.class);
+        Call<ArrayList<Rol>>respuesta = apiRoles.obtenerRoles(listaRoles);
         respuesta.enqueue(new Callback<ArrayList<Rol>>() {
             @Override
             public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {
                 if(response.isSuccessful()){
-                    System.out.println(response.body().size());
                     String []listaNombres = new String[response.body().size()+1];
                     listaNombres[0]= "Todos";
                     for(int i=0; i<response.body().size();i++)

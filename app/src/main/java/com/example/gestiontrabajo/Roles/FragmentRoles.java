@@ -11,9 +11,10 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Conexión.apiRol;
+import com.example.gestiontrabajo.Conexión.apiRoles;
 import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.R;
+import com.example.gestiontrabajo.Reservas.FragmentReservas;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -70,15 +71,16 @@ public class FragmentRoles extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                getActivity().finishAffinity();
+                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                actividadConUsuario.cambiarFragmento(fragmentReservas);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
         return vista;
     }
     private void obtenerRoles(){
-        apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        Call<ArrayList<Rol>>listaRoles = apiRol.obtenerRoles();
+        apiRoles apiRoles = actividadConUsuario.retrofit.create(apiRoles.class);
+        Call<ArrayList<Rol>>listaRoles = apiRoles.obtenerRoles();
         listaRoles.enqueue(new Callback<ArrayList<Rol>>() {
             @Override
             public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {

@@ -11,7 +11,7 @@ import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Conexión.apiRol;
+import com.example.gestiontrabajo.Conexión.apiRoles;
 import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.R;
 import com.google.android.material.switchmaterial.SwitchMaterial;
@@ -79,8 +79,8 @@ public class FragmentRol extends Fragment {
                 //Guardar rol
                if (crear){
                     //Crea rol
-                    apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-                    Call<Rol> respuesta = apiRol.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealiza_reservas(),rol.isCambiar_contraseña(),rol.isMod_usu(),rol.isMod_rol(),rol.isImp_exp());
+                    apiRoles apiRoles = actividadConUsuario.retrofit.create(apiRoles.class);
+                    Call<Rol> respuesta = apiRoles.guardaRol(rol.getNombre_rol(),rol.getRango_rol(),rol.isRealiza_reservas(),rol.isCambiar_contraseña(),rol.isMod_usu(),rol.isMod_rol(),rol.isImp_exp());
                     respuesta.enqueue(new Callback<Rol>() {
                         @Override
                         public void onResponse(Call<Rol> call, Response<Rol> response) {
@@ -98,8 +98,8 @@ public class FragmentRol extends Fragment {
                     });
                 }else{
                     //Edita rol
-                    apiRol apiRol =actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-                    Call<Rol>respuesta= apiRol.actualizarRol(rol.getId(),rol);
+                    apiRoles apiRoles =actividadConUsuario.retrofit.create(apiRoles.class);
+                    Call<Rol>respuesta= apiRoles.actualizarRol(rol.getId(),rol);
                     respuesta.enqueue(new Callback<Rol>() {
                         @Override
                         public void onResponse(Call<Rol> call, Response<Rol> response) {

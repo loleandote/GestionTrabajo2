@@ -16,7 +16,10 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.FragmentConfiguracionPerfil;
 import com.example.gestiontrabajo.MainActivity;
+import com.example.gestiontrabajo.Observaciones.FragmentObservaciones;
 import com.example.gestiontrabajo.R;
+import com.example.gestiontrabajo.Reservas.FragmentReservas;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class FragmentPerfil extends Fragment {
     public ActividadConUsuario actividadConUsuario;
@@ -24,6 +27,7 @@ public class FragmentPerfil extends Fragment {
     private View vista;
     private RecyclerView recyclerView;
     private PerfilAdapter perfilAdapter;
+    private FloatingActionButton IrAObservaciones;
     public FragmentPerfil() {
         // Required empty public constructor
     }
@@ -37,6 +41,14 @@ public class FragmentPerfil extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_perfil, container, false);
+        IrAObservaciones = vista.findViewById(R.id.IrAObservaciones);
+        IrAObservaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentObservaciones fragmentObservaciones= new FragmentObservaciones(actividadConUsuario,actividadConUsuario.usuario,true);
+                actividadConUsuario.cambiarFragmento(fragmentObservaciones);
+            }
+        });
         recyclerView = vista.findViewById(R.id.ReciclerViewPerfil);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), 1));
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
@@ -75,10 +87,8 @@ public class FragmentPerfil extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-
-                getActivity().finishAffinity();
-                //System.exit(0);
-                // getActivity().finishAffinity();
+                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario,true);
+             actividadConUsuario.cambiarFragmento(fragmentReservas);
                 // Handle the back button event
                 //
 

@@ -1,7 +1,7 @@
 package com.example.gestiontrabajo.Instalaciones;
 
 import android.app.DatePickerDialog;
-import android.os.Build;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,25 +17,22 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
-import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
 import com.example.gestiontrabajo.Conexión.apiReservas;
-import com.example.gestiontrabajo.Conexión.apiUsuario;
+import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.DatePickerFragment;
 import com.example.gestiontrabajo.Datos.Instalación;
 import com.example.gestiontrabajo.Datos.Reserva;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.R;
 import com.example.gestiontrabajo.Reservas.FragmentReservas;
-import com.example.gestiontrabajo.Usuarios.FragmentUsuario;
 import com.example.gestiontrabajo.Usuarios.FragmentUsuarios;
 import com.squareup.picasso.Picasso;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -100,8 +97,9 @@ public class FragmentInstalacion extends Fragment {
         horaInicio=0;
         horaFin=0;
         usuarioSeleccionado = vista.findViewById(R.id.NombreUsuarioReserva);
+        Resources res= getResources();
         if (i==0)
-        cambiarUsuario("Selecciona un usuario");
+        cambiarUsuario(res.getString(R.string.SeleccionarUsuario));
         i=1;
         usuarioSeleccionado.setText(usuario.getNombre_usuario());
         if(reservarAMi){
@@ -292,10 +290,10 @@ public class FragmentInstalacion extends Fragment {
         newFragment.show(getActivity().getSupportFragmentManager(), "datePicker");
     }
     private void actualizarSaldoUsuario(){
-        apiUsuario apiUsuario= actividadConUsuario.retrofit.create(apiUsuario.class);
+        apiUsuarios apiUsuarios = actividadConUsuario.retrofit.create(apiUsuarios.class);
         int creditos= actividadConUsuario.usuario.getCreditos()-instalación.getPrecio_hora()*(horaFin-horaInicio);
         actividadConUsuario.usuario.setCreditos(creditos);
-        Call<Usuario> respuesta = apiUsuario.actualizarUsuario(actividadConUsuario.usuario.getId(),actividadConUsuario.usuario);
+        Call<Usuario> respuesta = apiUsuarios.actualizarUsuario(actividadConUsuario.usuario.getId(),actividadConUsuario.usuario);
         respuesta.enqueue(new Callback<Usuario>() {
             @Override
             public void onResponse(Call<Usuario> call, Response<Usuario> response) {

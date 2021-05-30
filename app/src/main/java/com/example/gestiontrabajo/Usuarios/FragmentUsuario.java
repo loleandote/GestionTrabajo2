@@ -1,6 +1,7 @@
 package com.example.gestiontrabajo.Usuarios;
 
 import android.app.DatePickerDialog;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
@@ -17,16 +18,18 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Switch;
+import android.widget.Toast;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.Conexión.apiRol;
-import com.example.gestiontrabajo.Conexión.apiUsuario;
+import com.example.gestiontrabajo.Conexión.apiRoles;
+import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.DatePickerFragment;
 import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.Datos.Usuario;
+import com.example.gestiontrabajo.Observaciones.FragmentObservaciones;
 import com.example.gestiontrabajo.R;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.regex.Pattern;
@@ -54,12 +57,18 @@ public class FragmentUsuario extends Fragment {
     int dia, mes, anyo;
     FragmentUsuarios fragmentUsuarios;
     ArrayList<Rol>listaRolesDisponibles;
+    FloatingActionButton IrAObservaciones;
     public FragmentUsuario() {
         // Required empty public constructor
     }
 
     public FragmentUsuario(ActividadConUsuario actividadConUsuario){
         this.actividadConUsuario= actividadConUsuario;
+    }
+
+    public FragmentUsuario(ActividadConUsuario actividadConUsuario, Usuario usuario) {
+        this.actividadConUsuario = actividadConUsuario;
+        this.usuario = usuario;
     }
 
     public FragmentUsuario(ActividadConUsuario actividadConUsuario,FragmentUsuarios fragmentUsuarios, Usuario usuario) {
@@ -86,7 +95,7 @@ public class FragmentUsuario extends Fragment {
         RolUsuario = vista.findViewById(R.id.RolUsuario);
         obtenerRoles();
 
-
+        Resources resources= getResources();
         EsClienteUsuario = vista.findViewById(R.id.EsClienteUsuario);
         EsClienteUsuario.setChecked(usuario.isEs_cliente());
         EsPenalizadoUsuario = vista.findViewById(R.id.EsPenalizadoUsuario);
@@ -124,7 +133,7 @@ public class FragmentUsuario extends Fragment {
         guardarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                apiUsuario apiUsuario = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiUsuario.class);
+                apiUsuarios apiUsuarios = actividadConUsuario.retrofit.create(apiUsuarios.class);
 
                 if(usuario.getId()>0) {
                     usuario.setNombre_usuario(String.valueOf(nombreUsuario.getText()));
@@ -143,7 +152,7 @@ public class FragmentUsuario extends Fragment {
                     }
                     if(usuario.getNombre_usuario().length()>3&&usuario.getNombre_usuario().length()<9&&usuario.getContraseña_usuario().length()>7&& usuario.getContraseña_usuario().length()<17&&validarEmail(usuario.getCorreo_usuario()))
                     {
-                        Call<Usuario> respuesta = apiUsuario.actualizarUsuario(usuario.getId(), usuario);
+                        Call<Usuario> respuesta = apiUsuarios.actualizarUsuario(usuario.getId(), usuario);
                     respuesta.enqueue(new Callback<Usuario>() {
                         @Override
                         public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -155,7 +164,7 @@ public class FragmentUsuario extends Fragment {
 
                         @Override
                         public void onFailure(Call<Usuario> call, Throwable t) {
-
+                            Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                         }
                     });}
 
@@ -178,7 +187,7 @@ public class FragmentUsuario extends Fragment {
                     }
                     Date hoy = new Date();
                     if(usuario.getNombre_usuario().length()>3&&usuario.getNombre_usuario().length()<9&&usuario.getContraseña_usuario().length()>7&& usuario.getContraseña_usuario().length()<17&&validarEmail(usuario.getCorreo_usuario())) {
-                        Call<Usuario> respuesta = apiUsuario.guardaUsuario(usuario.getNombre_usuario(), usuario.getContraseña_usuario(), usuario.getCorreo_usuario(), hoy.getDate(), hoy.getMonth(), hoy.getYear() + 1900, usuario.getCreditos(), usuario.isPenalizado(), 0, 0, 0, usuario.getCodigo_rol());
+                        Call<Usuario> respuesta = apiUsuarios.guardaUsuario(usuario.getNombre_usuario(), usuario.getContraseña_usuario(), usuario.getCorreo_usuario(), hoy.getDate(), hoy.getMonth(), hoy.getYear() + 1900, usuario.getCreditos(), usuario.isPenalizado(), 0, 0, 0, usuario.getCodigo_rol());
                         respuesta.enqueue(new Callback<Usuario>() {
                             @Override
                             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
@@ -190,17 +199,37 @@ public class FragmentUsuario extends Fragment {
 
                             @Override
                             public void onFailure(Call<Usuario> call, Throwable t) {
-
+                                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
                             }
                         });
                     }
+                    else
+                    if(usuario.getNombre_usuario().length()>3&&usuario.getNombre_usuario().length()<9)
+                        Toast.makeText(getActivity(), resources.getString(R.string.NombreIncorrecto), Toast.LENGTH_SHORT).show();
+                    else if(usuario.getContraseña_usuario().length()>7&& usuario.getContraseña_usuario().length()<17)  Toast.makeText(getActivity(), resources.getString(R.string.ContraseñaIncorrecta), Toast.LENGTH_SHORT).show();
+                    else  Toast.makeText(getActivity(), resources.getString(R.string.NombreIncorrecto), Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+
+        IrAObservaciones= vista.findViewById(R.id.IrAObservaciones);
+        IrAObservaciones.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                FragmentObservaciones fragmentObservaciones= new FragmentObservaciones(actividadConUsuario, usuario,false);
+                actividadConUsuario.cambiarFragmento(fragmentObservaciones);
             }
         });
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
+                if(fragmentUsuarios!=null)
              actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+                else
+                {
+                    FragmentUsuarios fragmentUsuarios= new FragmentUsuarios(actividadConUsuario);
+                    actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -213,7 +242,15 @@ public class FragmentUsuario extends Fragment {
             public void onDateSet(DatePicker datePicker, int year, int month, int day) {
                 // +1 because January is zero
                 final String selectedDate = day + "-" + (month+1) + "-" + year;
+                Date fechaHoy = new Date();
+                Date fechaBan =new Date(year, month+1, day);
+                if (fechaHoy.compareTo(fechaBan)==1)
                 EsPenalizadoUsuario.setText(selectedDate);
+                else {
+                    String mensaje = getResources().getString(R.string.FechaIncorrecta);
+                    Toast.makeText(getActivity(), mensaje, Toast.LENGTH_SHORT).show();
+
+                }
             }
         });
 
@@ -225,8 +262,8 @@ public class FragmentUsuario extends Fragment {
         ArrayList<Integer>listaRoles=new ArrayList<>();
         for(int i=0; i<=actividadConUsuario.rol.getRango_rol();i++)
             listaRoles.add(i);
-        apiRol apiRol = actividadConUsuario.retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        Call<ArrayList<Rol>>respuesta = apiRol.obtenerRoles(listaRoles);
+        apiRoles apiRoles = actividadConUsuario.retrofit.create(apiRoles.class);
+        Call<ArrayList<Rol>>respuesta = apiRoles.obtenerRoles(listaRoles);
         respuesta.enqueue(new Callback<ArrayList<Rol>>() {
             @Override
             public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {
@@ -242,6 +279,7 @@ public class FragmentUsuario extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Rol>> call, Throwable t) {
+                Toast.makeText(getActivity(), t.getMessage(), Toast.LENGTH_SHORT).show();
 
             }
         });

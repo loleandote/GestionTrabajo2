@@ -4,7 +4,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,8 +14,8 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.example.gestiontrabajo.Conexión.Cliente;
-import com.example.gestiontrabajo.Conexión.apiRol;
-import com.example.gestiontrabajo.Conexión.apiUsuario;
+import com.example.gestiontrabajo.Conexión.apiRoles;
+import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.Instalaciones.FragmentInstalaciones;
@@ -40,29 +39,20 @@ public class ActividadConUsuario extends AppCompatActivity {
     public Retrofit retrofit;
     public Usuario usuario;
     public Rol rol;
-    public SharedPreferences propiedades;
+    //public SharedPreferences propiedades;
     private Menu menu;
-    private Fragment fragmentActual;
+    public String lenguaje;
 
-    public Fragment getFragmentAntiguo() {
-        return fragmentAntiguo;
-    }
 
-    public void setFragmentAntiguo(Fragment fragmentAntiguo) {
-        this.fragmentAntiguo = fragmentAntiguo;
-    }
-
-    private Fragment fragmentAntiguo;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_actividad_con_usuario);
-        propiedades =getBaseContext().getSharedPreferences("Idiomas",MODE_PRIVATE);
         retrofit= Cliente.obtenerCliente();
         int id;
         id = getIntent().getIntExtra("usuario",0);
         obtenerUsuario(id);
-
+lenguaje= CargarIdioma();
         getSupportActionBar().setHomeAsUpIndicator(R.drawable.icons8_menu_24);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         drawerLayout = findViewById(R.id.drawerLayout);
@@ -126,8 +116,8 @@ public class ActividadConUsuario extends AppCompatActivity {
     }
 
     private void obtenerUsuario(int idUsuario){
-        apiUsuario apiUsuario = retrofit.create(com.example.gestiontrabajo.Conexión.apiUsuario.class);
-        Call<ArrayList<Usuario>> listaUsuarios = apiUsuario.obtenerUsuario(idUsuario);
+        apiUsuarios apiUsuarios = retrofit.create(apiUsuarios.class);
+        Call<ArrayList<Usuario>> listaUsuarios = apiUsuarios.obtenerUsuario(idUsuario);
         listaUsuarios.enqueue(new Callback<ArrayList<Usuario>>() {
             @Override
             public void onResponse(Call<ArrayList<Usuario>> call, Response<ArrayList<Usuario>> response) {
@@ -145,8 +135,8 @@ public class ActividadConUsuario extends AppCompatActivity {
     }
 
     private void obtenerRol(int idRol){
-        apiRol apiRol= retrofit.create(com.example.gestiontrabajo.Conexión.apiRol.class);
-        Call<ArrayList<Rol>>RolUsuario = apiRol.obtenerRol(idRol);
+        apiRoles apiRoles = retrofit.create(apiRoles.class);
+        Call<ArrayList<Rol>>RolUsuario = apiRoles.obtenerRol(idRol);
         RolUsuario.enqueue(new Callback<ArrayList<Rol>>() {
             @Override
             public void onResponse(Call<ArrayList<Rol>>call, Response<ArrayList<Rol>> response) {
@@ -191,9 +181,7 @@ public class ActividadConUsuario extends AppCompatActivity {
                 }
             }
         }
-        if (fragmentActual!= null)
-        fragmentAntiguo= fragmentActual;
-        fragmentActual = fragment;
+
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.frameLayoutPrincipal,fragment);
@@ -207,6 +195,13 @@ public class ActividadConUsuario extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putString("Idioma",idioma);
         editor.commit();
+    }
+
+    private String CargarIdioma()
+    {
+        SharedPreferences sharedPreferences = getSharedPreferences("MyData", MODE_PRIVATE);
+        String idioma = sharedPreferences.getString("Idioma","");
+        return idioma;
     }
 
 
