@@ -134,7 +134,7 @@ public class FragmentInstalacion extends Fragment {
             mes="0"+mes;
         }
         dia = dia2+"-"+mes+"-"+String.valueOf(fecha.getYear()+1900);
-        añoNumero=fecha.getYear();
+        añoNumero=fecha.getYear()+1900;
 
         DiaEditText = vista.findViewById(R.id.DiaEditText);
         DiaEditText.setText(dia);
@@ -208,7 +208,7 @@ public class FragmentInstalacion extends Fragment {
                         if (usuario.getId()>0)
                         id=usuario.getId();
                         if (id >0){
-                    Call<Reserva> respuesta = apiReservas.guardaReserva(id, instalación.getId(), instalación.getImagenes().get(0),instalación.getNombre(), diaNumero,mesNumero, añoNumero+1900, horaInicio, horaFin, precio,false, false, true);
+                    Call<Reserva> respuesta = apiReservas.guardaReserva(id, instalación.getId(), instalación.getImagenes().get(0),instalación.getNombre(), diaNumero,mesNumero, añoNumero, horaInicio, horaFin, precio,false,false, false, true);
                     respuesta.enqueue(new Callback<Reserva>() {
                         @Override
                         public void onResponse(Call<Reserva> call, Response<Reserva> response) {

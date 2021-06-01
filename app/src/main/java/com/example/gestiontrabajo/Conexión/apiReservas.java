@@ -43,6 +43,7 @@ public interface apiReservas {
             @Field("hora_fin") int hora_fin,
             @Field("precio") int precio,
             @Field("cancel_usu") Boolean cancel_usu,
+            @Field("cancel_admin") Boolean cancel_admin,
             @Field("no_acude") Boolean no_acude,
             @Field("pagado") Boolean pagado
     );

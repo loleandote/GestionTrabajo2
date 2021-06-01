@@ -40,7 +40,8 @@ public class FragmentReservas extends Fragment {
     private Spinner AñosUsuario;
     private Spinner MesesAño;
     private boolean soloYo;
-    private int dia, mes, año;
+    private int  mes, año;
+    private boolean seleccion= false;
     public FragmentReservas() {
         // Required empty public constructor
     }
@@ -64,7 +65,6 @@ public class FragmentReservas extends Fragment {
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_reservas, container, false);
         Date fecha = new Date();
-        dia= fecha.getDay();
         mes= fecha.getMonth()+1;
         año = fecha.getYear()+1900;
         AñosUsuario = vista.findViewById(R.id.AñosUsuario);
@@ -85,6 +85,7 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 año = listaAños.get(0)+position;
+                if (seleccion)
                 if(soloYo)
                     obtenerDatosUsuario();
                 else
@@ -106,6 +107,7 @@ public class FragmentReservas extends Fragment {
             @Override
             public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                 mes= position+1;
+                if(seleccion)
                 if(soloYo)
                     obtenerDatosUsuario();
                 else

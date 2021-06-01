@@ -144,7 +144,6 @@ lenguaje= CargarIdioma();
                     rol= response.body().get(0);
                     FragmentReservas fragmentReservas;
                     if(rol.isRealiza_reservas()){
-                        System.out.println("-----------------------------------------------------------------");
                         fragmentReservas = new FragmentReservas( true);
                         //cambiarFragmento(fragmentReservas);
                     }
@@ -212,9 +211,9 @@ lenguaje= CargarIdioma();
             for (int i=0; i<rol.getClass().getFields().length;i++)
             if(rol.isRealiza_reservas()|| rol.isRealiza_reservas_otros())
                 menu.findItem(R.id.InstalacionesNavMenu).setVisible(true);
-            if(rol.isMod_rol())
+            if(rol.isMod_permiso())
                 menu.findItem(R.id.RolesNavMenu).setVisible(true);
-            if(rol.isMod_usu())
+            if(rol.ismod_usuario_otros())
                 menu.findItem(R.id.UsuariosNavMenu).setVisible(true);
             //if (rol.)
 
