@@ -41,6 +41,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.MiViewHo
     public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
         System.out.println(position);
         holder.nombreTextView.setText(lista.get(position).getNombre_usuario());
+        holder.rolUsuarioTextView.setText(lista.get(position).getCodigo_rol());
     }
 
     public void setOnItemClickListener(View.OnClickListener onClickListener)
@@ -63,9 +64,11 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.MiViewHo
 
     public static class MiViewHolder extends  RecyclerView.ViewHolder{
         public TextView nombreTextView;
+        public TextView rolUsuarioTextView;
         public MiViewHolder(View view){
             super(view);
             this.nombreTextView =itemView.findViewById(R.id.nombreUsuarioTextView);
+            this.rolUsuarioTextView =itemView.findViewById(R.id.rolUsuarioTextView);
         }
     }
 }

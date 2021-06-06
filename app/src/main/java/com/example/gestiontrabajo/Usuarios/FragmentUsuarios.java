@@ -39,6 +39,7 @@ public class FragmentUsuarios extends Fragment {
     FragmentInstalacion fragmentInstalacion;
     Spinner OpcionesRoles;
     ArrayList<Integer>listaRoles;
+    ArrayList<Rol>listaRolCompleto;
     public FragmentUsuarios() {
         // Required empty public constructor
     }
@@ -175,6 +176,7 @@ public class FragmentUsuarios extends Fragment {
             @Override
             public void onResponse(Call<ArrayList<Rol>> call, Response<ArrayList<Rol>> response) {
                 if(response.isSuccessful()){
+                    listaRolCompleto= response.body();
                     String []listaNombres = new String[response.body().size()+1];
                     listaNombres[0]= "Todos";
                     for(int i=0; i<response.body().size();i++)
@@ -185,7 +187,7 @@ public class FragmentUsuarios extends Fragment {
 
             @Override
             public void onFailure(Call<ArrayList<Rol>> call, Throwable t) {
-
+System.out.println(t.getMessage());
             }
         });
     }
