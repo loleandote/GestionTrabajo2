@@ -26,68 +26,91 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/InstalacionImagen" />
 
-        <TextView
-            android:id="@+id/textView22"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:id="@+id/linearLayout5"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@string/Diadelareserva"
-            app:layout_constraintBottom_toTopOf="@+id/reservasInicioDisponibles"
+            android:layout_marginTop="150"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion">
 
-        <EditText
-            android:id="@+id/DiaEditText"
-            android:layout_width="150dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:clickable="true"
-            android:focusable="false"
-            android:hint="Dia"
-            android:inputType="date"
-            app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toEndOf="@+id/textView22"
-            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
+            <TextView
+                android:id="@+id/textView22"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/Diadelareserva" />
 
-        <TextView
-            android:id="@+id/textView23"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/HoraInicio"
-            app:layout_constraintBottom_toTopOf="@+id/NombreUsuarioReserva"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
+            <EditText
+                android:id="@+id/DiaEditText"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:clickable="true"
+                android:focusable="false"
+                android:hint="Dia"
+                android:inputType="date"
+                app:layout_constraintHorizontal_weight="2"
+                app:layout_constraintStart_toEndOf="@+id/textView22"
+                app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
+        </LinearLayout>
 
-        <Spinner
-            android:id="@+id/reservasInicioDisponibles"
-            android:layout_width="150dp"
+        <LinearLayout
+            android:id="@+id/linearLayout6"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintStart_toEndOf="@+id/textView23"
-            app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout5">
 
-        <Spinner
-            android:id="@+id/reservasFinDisponibles"
-            android:layout_width="150dp"
+            <TextView
+                android:id="@+id/textView23"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:minWidth="150dp"
+                android:text="@string/HoraInicio"
+                app:layout_constraintBottom_toTopOf="@+id/NombreUsuarioReserva"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <Spinner
+                android:id="@+id/reservasInicioDisponibles"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                app:layout_constraintStart_toEndOf="@+id/textView23"
+                app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reservasInicioDisponibles" />
+            app:layout_constraintTop_toBottomOf="@+id/linearLayout6">
+
+            <TextView
+                android:layout_height="wrap_content"
+                android:layout_width="150dp"
+                android:text="@string/HoraFin"
+                app:layout_constraintTop_toTopOf="@+id/NombreUsuarioReserva" />
+
+            <Spinner
+                android:id="@+id/reservasFinDisponibles"
+                android:layout_width="150dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/reservasInicioDisponibles" />
+        </LinearLayout>
+
+
 
         <Button
             android:id="@+id/ReservarBoton"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginBottom="35dp"
             android:layout_marginHorizontal="25dp"
+            android:layout_marginBottom="35dp"
             android:text="Reservar"
-            app:layout_constraintBottom_toBottomOf="parent" />
+            app:layout_constraintBottom_toBottomOf="parent"
+            tools:layout_editor_absoluteX="25dp" />
 
-        <TextView
-            android:id="@+id/NombreUsuarioReserva"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:inputType="none"
-            android:minWidth="150dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reservasFinDisponibles" />
+
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
