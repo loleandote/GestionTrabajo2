@@ -1,10 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/InstalacionesNavMenu" android:title="@string/Instalaciones" android:visible="false" />
-    <item android:id="@+id/MisReservasNavMenu" android:title="@string/MisReservas" android:visible="false" />
-    <item android:id="@+id/ReservasNavMenu" android:title="@string/Reservas" android:visible="false" />
-    <item android:id="@+id/UsuariosNavMenu" android:title="@string/Usuarios" android:visible="false" />
-    <item android:id="@+id/RolesNavMenu" android:title="@string/Roles" android:visible="false" />
-    <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuario" android:visible="false" />
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item android:title="@string/Instalaciones" android:visible="false">
+        <menu>
+            <group android:id="@+id/cosa">
+                <item android:id="@+id/InstalacionesNavMenu" android:title="@string/Instalaciones" android:icon="@drawable/outline_fitness_center_black_24dp"/>
+
+            </group>
+        </menu>
+    </item>
+    <item android:title="@string/Reservas" android:visible="false">
+        <menu>
+            <item android:id="@+id/MisReservasNavMenu" android:title="@string/MisReservas" android:icon="@drawable/outline_event_black_24dp"/>
+            <item android:id="@+id/ReservasNavMenu" android:title="@string/Reservas" android:icon="@drawable/outline_calendar_today_black_24dp"/>
+        </menu>
+    </item>
+    <item android:title="@string/TituloUsuarios" android:visible="false">
+        <menu>
+            <group android:id="@+id/usuarios" >
+                <item android:id="@+id/UsuariosNavMenu" android:title="@string/Usuarios" android:icon="@drawable/outline_manage_accounts_black_24dp"/>
+                <item android:id="@+id/RolesNavMenu" android:title="@string/Roles" android:icon="@drawable/outline_shield_black_24dp"/>
+                <item android:id="@+id/PerfilNavMenu" android:title="@string/Usuario" android:icon="@drawable/outline_account_circle_black_24dp"/>
+            </group>
+        </menu>
+    </item>
 </menu>

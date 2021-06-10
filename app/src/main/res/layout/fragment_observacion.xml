@@ -7,7 +7,8 @@
     tools:context=".Observaciones.FragmentObservacion">
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_margin="10dp">
 
         <LinearLayout
             android:id="@+id/linearLayout3"
@@ -36,20 +37,20 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="16dp"
-                android:text="@string/Observacion"
+                android:text="@string/Observacion_"
                 android:textSize="24dp"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/editText" />
-
-            <EditText
-                android:id="@+id/editTextContenido"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="start"
-                android:inputType="textCapSentences|textMultiLine"
-                android:textAlignment="textStart"
-                app:layout_constraintTop_toBottomOf="@+id/textView21" />
+                android:layout_height="match_parent">
+                <EditText
+                    android:id="@+id/EditTextObservacionTexto"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+
+                    android:verticalScrollbarPosition="right"/>
+            </ScrollView>
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

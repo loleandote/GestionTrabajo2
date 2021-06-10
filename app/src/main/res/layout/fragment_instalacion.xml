@@ -26,6 +26,15 @@
             android:orientation="horizontal"
             app:layout_constraintTop_toBottomOf="@+id/InstalacionImagen" />
 
+        <TextView
+            android:id="@+id/textView22"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/Diadelareserva"
+            app:layout_constraintBottom_toTopOf="@+id/reservasInicioDisponibles"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
+
         <EditText
             android:id="@+id/DiaEditText"
             android:layout_width="150dp"
@@ -36,25 +45,31 @@
             android:hint="Dia"
             android:inputType="date"
             app:layout_constraintHorizontal_weight="2"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView22"
             app:layout_constraintTop_toBottomOf="@+id/recyclerViewImagenesInstalacion" />
 
+        <TextView
+            android:id="@+id/textView23"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/HoraInicio"
+            app:layout_constraintBottom_toTopOf="@+id/NombreUsuarioReserva"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
 
         <Spinner
             android:id="@+id/reservasInicioDisponibles"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/textView23"
             app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
 
         <Spinner
             android:id="@+id/reservasFinDisponibles"
             android:layout_width="150dp"
             android:layout_height="wrap_content"
-            android:layout_marginTop="8dp"
-            app:layout_constraintStart_toEndOf="@+id/reservasInicioDisponibles"
-            app:layout_constraintTop_toBottomOf="@+id/DiaEditText" />
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/reservasInicioDisponibles" />
 
         <Button
             android:id="@+id/ReservarBoton"
@@ -69,11 +84,10 @@
             android:id="@+id/NombreUsuarioReserva"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:minWidth="150dp"
             android:inputType="none"
+            android:minWidth="150dp"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/reservasInicioDisponibles" />
+            app:layout_constraintTop_toBottomOf="@+id/reservasFinDisponibles" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

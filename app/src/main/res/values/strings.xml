@@ -12,7 +12,7 @@
     <string name="canceled">CANCELADA</string>
     <!--Textos FragmentReserva-->
     <string name="TextoReservaInicio">La reserva está establecida para</string>
-    <string name="dia">día</string>
+    <string name="dia">día de la reserva</string>
     <string name="Cancelar">Cancelar</string>
     <!--Tambien en FragmentReservas-->
     <string name="desde">desde</string>
@@ -76,7 +76,40 @@
     <string name="FechaIncorrecta">La fecha debe ser superior o igual a la actual</string>
     <string name="Titulo">Titulo:</string>
     <string name="Filtros">Filtros</string>
-    <string name="Observacion">Observación:</string>
+    <string name="Observacion_">Observación:</string>
     <string name="ObservacionesDe">Observaciones de </string>
     <string name="SeleccionarUsuario">Clic aquí para seleccionar un usuario </string>
+    <string name="Tipo">Tipo</string>
+    <string name="PrecioHora">Precio hora</string>
+    <string name="HoraApertura">Hora de apertura</string>
+    <string name="HoraCierre">Hora de cierre</string>
+    <string name="TiempoMinimo">Tiempo mínimo</string>
+    <string name="TiempoMaximo">Tiempo máximo</string>
+    <string name="Diadelareserva">Día de la reserva:</string>
+    <string name="HoraInicio">Hora de inicio:</string>
+    <string name="HoraFin">Hora de fin:</string>
+    <string name="TituloUsuarios">Configuración de usuarios</string>
+    <string name="TituloInstalaciones">Configuración de instalaciones</string>
+    <string name="Perfil">Perfil</string>
+    <string name="Observaciones">Observaciones</string>
+    <string name="MisDatos">Mis datos</string>
+    <string name="Idiomas">Idiomas</string>
+    <string name="Reserva">Reserva</string>
+    <string name="Instalacion">Instalación</string>
+    <string name="Observacion">Obaservación</string>
+    <string name="QuienSoy">¿Quién soy?</string>
+    <string name="Ami">A mi</string>
+    <string name="FinPenalizacion">Fin penalización</string>
+    <string name="ReservaRealizada">Reserva realizada</string>
+    <string name="CreditoInsuficiente">No hay monedos</string>
+    <string name="Baneado">Estás baneado</string>
+    <string name="SinNombre">Introduce un nombre</string>
+    <string name="SinPrecio">Introduce un precio</string>
+    <string name="InicioIncorrecto">Apertura o cierre incorrecto</string>
+    <string name="TiempoReserva">Tiempo de reserva insuficiente</string>
+    <string name="ObservacionGuardada">Observación guardada</string>
+    <string name="ReservaCancelada">Reserva canceada</string>
+    <string name="RolGuardado">Rol guardado</string>
+    <string name="UsuarioCorrecto">Usuario guardado</string>
+    <string name="UsuarioBaneado">Estas baneado</string>
 </resources>

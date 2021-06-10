@@ -50,11 +50,14 @@ public class Usuario {
     @SerializedName("codigo_rol")
     @Expose
     private int codigo_rol;
+    @SerializedName("nombre_rol")
+    @Expose
+    private String nombre_rol;
 
     public Usuario() {
     }
 
-    public Usuario(int id, String nombre_usuario, String contraseña_usuario, String correo_usuario, int dia_alta, int mes_alta, int anyo_alta, int creditos, boolean es_cliente, boolean penalizado, int dia_fin_pena, int mes_fin_pena, int anyo_fin_pena, int codigo_rol) {
+    public Usuario(int id, String nombre_usuario, String contraseña_usuario, String correo_usuario, int dia_alta, int mes_alta, int anyo_alta, int creditos, boolean es_cliente, boolean penalizado, int dia_fin_pena, int mes_fin_pena, int anyo_fin_pena, int codigo_rol, String nombre_rol) {
         this.id = id;
         this.nombre_usuario = nombre_usuario;
         this.contraseña_usuario = contraseña_usuario;
@@ -69,6 +72,7 @@ public class Usuario {
         this.mes_fin_pena = mes_fin_pena;
         this.anyo_fin_pena = anyo_fin_pena;
         this.codigo_rol = codigo_rol;
+        this.nombre_rol = nombre_rol;
     }
 
     public int getId() {
@@ -181,5 +185,13 @@ public class Usuario {
 
     public void setEs_cliente(boolean es_cliente) {
         this.es_cliente = es_cliente;
+    }
+
+    public String getNombre_rol() {
+        return nombre_rol;
+    }
+
+    public void setNombre_rol(String nombre_rol) {
+        this.nombre_rol = nombre_rol;
     }
 }

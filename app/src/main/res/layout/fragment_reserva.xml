@@ -37,13 +37,15 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/desde" />
+                android:text="@string/desde"
+                android:gravity="end"
+                android:textAlignment="textEnd"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:gravity="end"
                 android:text="@string/hasta"
+                android:gravity="end"
                 android:textAlignment="textEnd" />
         </LinearLayout>
 

@@ -4,25 +4,23 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.gestiontrabajo.Datos.Rol;
 import com.example.gestiontrabajo.Datos.Usuario;
-import com.example.gestiontrabajo.Instalaciones.InstalaciónAdapter;
 import com.example.gestiontrabajo.R;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.MiViewHolder> {
 
     ArrayList<Usuario> lista;
     private Context context;
     private View.OnClickListener onClickListener;
-    public UsuarioAdapter(Context context) {
+    public UsuarioAdapter(Context context, ArrayList<Rol>listaRoles) {
         lista= new ArrayList<>();
         this.context = context;
     }
@@ -41,7 +39,7 @@ public class UsuarioAdapter extends RecyclerView.Adapter<UsuarioAdapter.MiViewHo
     public void onBindViewHolder(@NonNull MiViewHolder holder, int position) {
         System.out.println(position);
         holder.nombreTextView.setText(lista.get(position).getNombre_usuario());
-        holder.rolUsuarioTextView.setText(lista.get(position).getCodigo_rol());
+        holder.rolUsuarioTextView.setText(lista.get(position).getNombre_rol());
     }
 
     public void setOnItemClickListener(View.OnClickListener onClickListener)

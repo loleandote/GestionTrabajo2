@@ -1,6 +1,7 @@
 package com.example.gestiontrabajo.Usuarios;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +11,7 @@ import android.widget.Spinner;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -90,7 +92,8 @@ public class FragmentUsuarios extends Fragment {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
-        usuarioAdapter= new UsuarioAdapter(getActivity());
+        usuarioAdapter= new UsuarioAdapter(getActivity(), listaRolCompleto);
+        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(),1));
         recyclerView.setAdapter(usuarioAdapter);
         usuarioAdapter.setOnItemClickListener(new View.OnClickListener() {
             @Override
@@ -102,7 +105,7 @@ public class FragmentUsuarios extends Fragment {
                 else {
                     fragmentInstalacion.setUsuario(usuario);
                     fragmentInstalacion.cambiarUsuario(usuario.getNombre_usuario());
-                    actividadConUsuario.cambiarFragmento(fragmentInstalacion);
+                    actividadConUsuario.cambiarFragmento(fragmentInstalacion,  actividadConUsuario.getResources().getString(R.string.Instalacion));
                 }
             }
         });
@@ -112,14 +115,15 @@ public class FragmentUsuarios extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                if (fragmentInstalacion == null)
-
-                {
-                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
-                    actividadConUsuario.cambiarFragmento(fragmentReservas);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    if (fragmentInstalacion == null) {
+                        FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                        actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.Reservas));
+                    } else
+                        actividadConUsuario.cambiarFragmento(fragmentInstalacion, actividadConUsuario.getResources().getString(R.string.Instalacion));
                 }
-                else
-                    actividadConUsuario.cambiarFragmento(fragmentInstalacion);
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -128,7 +132,7 @@ public class FragmentUsuarios extends Fragment {
 
     private void seleccionarUsuario(Usuario usuario){
         FragmentUsuario fragmentUsuario= new FragmentUsuario(actividadConUsuario,this, usuario);
-        actividadConUsuario.cambiarFragmento(fragmentUsuario);
+        actividadConUsuario.cambiarFragmento(fragmentUsuario,  actividadConUsuario.getResources().getString(R.string.Usuario));
     }
 
     private void obtenerUsuarios(){
@@ -202,6 +206,6 @@ System.out.println(t.getMessage());
     private void irAusuario()
     {
         FragmentUsuario fragmentUsuario= new FragmentUsuario(actividadConUsuario);
-        actividadConUsuario.cambiarFragmento(fragmentUsuario);
+        actividadConUsuario.cambiarFragmento(fragmentUsuario,  actividadConUsuario.getResources().getString(R.string.Usuario));
     }
 }

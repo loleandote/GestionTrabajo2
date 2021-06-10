@@ -1,6 +1,7 @@
 package com.example.gestiontrabajo.Roles;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -8,6 +9,7 @@ import android.widget.Button;
 import android.widget.EditText;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
@@ -76,6 +78,7 @@ public class FragmentRol extends Fragment {
                 rol.setModificar_usuario(ModificarUsuario.isChecked());
                 rol.setMod_permiso(ModificarRol.isChecked());
                 rol.setExporta_importa(ImportarExportarInf.isChecked());
+                actividadConUsuario.mensajeCorrecto(vista,inflater, R.string.RolGuardado);
                 //Guardar rol
                if (crear){
                     //Crea rol
@@ -86,7 +89,7 @@ public class FragmentRol extends Fragment {
                         public void onResponse(Call<Rol> call, Response<Rol> response) {
                             if (response.isSuccessful()){
                                 FragmentRoles fragmentRoles = new FragmentRoles(actividadConUsuario);
-                                actividadConUsuario.cambiarFragmento(fragmentRoles);
+                                actividadConUsuario.cambiarFragmento(fragmentRoles, actividadConUsuario.getResources().getString(R.string.Roles));
                             }
                         }
 
@@ -104,7 +107,7 @@ public class FragmentRol extends Fragment {
                         public void onResponse(Call<Rol> call, Response<Rol> response) {
                             if (response.isSuccessful()){
                                 FragmentRoles fragmentRoles = new FragmentRoles(actividadConUsuario);
-                                actividadConUsuario.cambiarFragmento(fragmentRoles);
+                                actividadConUsuario.cambiarFragmento(fragmentRoles, actividadConUsuario.getResources().getString(R.string.Roles));
                             }
                         }
 
@@ -120,9 +123,13 @@ public class FragmentRol extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                // Handle the back button event
-            FragmentRoles fragmentRoles = new FragmentRoles(actividadConUsuario);
-            actividadConUsuario.cambiarFragmento(fragmentRoles);
+                // Handle the back button event3
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+               else {
+                    FragmentRoles fragmentRoles = new FragmentRoles(actividadConUsuario);
+                    actividadConUsuario.cambiarFragmento(fragmentRoles, actividadConUsuario.getResources().getString(R.string.Roles));
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

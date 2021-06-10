@@ -2,6 +2,7 @@ package com.example.gestiontrabajo.Instalaciones;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,6 +13,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -159,15 +161,19 @@ public class FragmentInstalaciones extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentCrearInstalacion fragmentCrearInstalacion= new FragmentCrearInstalacion(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentCrearInstalacion);
+                actividadConUsuario.cambiarFragmento(fragmentCrearInstalacion, actividadConUsuario.getResources().getString(R.string.Instalacion));
             }
         });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                FragmentReservas fragmentReservas= new FragmentReservas(actividadConUsuario, true);
-                actividadConUsuario.cambiarFragmento(fragmentReservas);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.Reservas));
+                }
                 // Handle the back button event
 
             }
@@ -216,10 +222,10 @@ public class FragmentInstalaciones extends Fragment {
         if(reservar){
             FragmentInstalacion fragmentInstalacion = new FragmentInstalacion(actividadConUsuario, this, reservarAMi.isChecked());
         fragmentInstalacion.instalación = instalacion;
-        actividadConUsuario.cambiarFragmento(fragmentInstalacion);}
+        actividadConUsuario.cambiarFragmento(fragmentInstalacion, actividadConUsuario.getResources().getString(R.string.Instalacion));}
         else{
             FragmentCrearInstalacion fragmentCrearInstalacion = new FragmentCrearInstalacion(actividadConUsuario,instalacion);
-            actividadConUsuario.cambiarFragmento(fragmentCrearInstalacion);
+            actividadConUsuario.cambiarFragmento(fragmentCrearInstalacion, actividadConUsuario.getResources().getString(R.string.Instalacion));
         }
 
     }

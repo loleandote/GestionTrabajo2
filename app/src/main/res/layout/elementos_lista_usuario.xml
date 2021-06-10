@@ -8,7 +8,7 @@
     <TextView
         android:id="@+id/nombreUsuarioTextView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:text="nombre"
         android:padding="20dp"
         app:layout_constraintStart_toStartOf="parent"
@@ -22,4 +22,11 @@
         android:text="rol"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="@android:color/darker_gray" />
 </androidx.constraintlayout.widget.ConstraintLayout>

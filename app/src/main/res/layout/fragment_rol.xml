@@ -24,7 +24,7 @@
                 android:layout_height="wrap_content"
                 android:textSize="24dp"
                 android:layout_marginLeft="50dp"
-                android:text="nombre"
+                android:text="@string/NombreLogin"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 

@@ -2,6 +2,7 @@ package com.example.gestiontrabajo.Reservas;
 
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -202,22 +204,28 @@ public class FragmentReservas extends Fragment {
             obtenerDatos();
 
         FloatingActionButton IrAInstalaciones = vista.findViewById(R.id.IrAInstalaciones);
+        if (!actividadConUsuario.rol.isRealiza_reservas()&& !actividadConUsuario.rol.isRealiza_reservas_otros())
+            IrAInstalaciones.setVisibility(View.INVISIBLE);
         IrAInstalaciones.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 FragmentInstalaciones fragmentInstalaciones = new FragmentInstalaciones(actividadConUsuario,true);
-                actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
+                actividadConUsuario.cambiarFragmento(fragmentInstalaciones, actividadConUsuario.getResources().getString(R.string.Instalaciones));
             }
         });
 
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                if(soloYo)
-                getActivity().finishAffinity();
-                else {
-                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
-                    actividadConUsuario.cambiarFragmento(fragmentReservas);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else{
+                    if (soloYo)
+                        getActivity().finishAffinity();
+                    else {
+                        FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                        actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.MisReservas));
+                    }
                 }
                 // Handle the back button event
 
@@ -277,6 +285,6 @@ public class FragmentReservas extends Fragment {
 
         FragmentReserva fragmentReserva = new FragmentReserva(actividadConUsuario,this);
         fragmentReserva.reserva= reserva;
-        actividadConUsuario.cambiarFragmento(fragmentReserva);
+        actividadConUsuario.cambiarFragmento(fragmentReserva, actividadConUsuario.getResources().getString(R.string.Reserva));
     }
 }

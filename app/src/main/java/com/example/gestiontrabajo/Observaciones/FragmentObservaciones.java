@@ -4,10 +4,12 @@ import android.content.res.Resources;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,9 +22,7 @@ import com.example.gestiontrabajo.Datos.Observación;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.Perfil.FragmentPerfil;
 import com.example.gestiontrabajo.R;
-import com.example.gestiontrabajo.Reservas.FragmentReservas;
 import com.example.gestiontrabajo.Usuarios.FragmentUsuario;
-import com.example.gestiontrabajo.Usuarios.FragmentUsuarios;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.util.ArrayList;
@@ -73,7 +73,7 @@ public class FragmentObservaciones extends Fragment {
                 int observaciónPulsada = recyclerView.getChildAdapterPosition(v);
                 Observación observación = observaciónAdapter.lista.get(observaciónPulsada);
                 FragmentObservacion fragmentObservacion= new FragmentObservacion(actividadConUsuario, observación, usuario, yo);
-                actividadConUsuario.cambiarFragmento(fragmentObservacion);
+                actividadConUsuario.cambiarFragmento(fragmentObservacion, actividadConUsuario.getResources().getString(R.string.Observacion));
             }
         });
         recyclerView.setAdapter(observaciónAdapter);
@@ -83,19 +83,24 @@ public class FragmentObservaciones extends Fragment {
            public void onClick(View v) {
                Observación observación = new Observación();
                FragmentObservacion fragmentObservacion= new FragmentObservacion(actividadConUsuario,observación,usuario,yo);
-               actividadConUsuario.cambiarFragmento(fragmentObservacion);
+               actividadConUsuario.cambiarFragmento(fragmentObservacion, actividadConUsuario.getResources().getString(R.string.Observacion));
            }
        });
         obtenerObservaciones();
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                if(!yo) {
-                    FragmentUsuario fragmentUsuarios = new FragmentUsuario(actividadConUsuario, usuario);
-                    actividadConUsuario.cambiarFragmento(fragmentUsuarios);
-                }else{
-                    FragmentPerfil fragmentPerfil= new FragmentPerfil(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentPerfil);}
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    if (!yo) {
+                        FragmentUsuario fragmentUsuarios = new FragmentUsuario(actividadConUsuario, usuario);
+                        actividadConUsuario.cambiarFragmento(fragmentUsuarios, actividadConUsuario.getResources().getString(R.string.Usuarios));
+                    } else {
+                        FragmentPerfil fragmentPerfil = new FragmentPerfil(actividadConUsuario);
+                        actividadConUsuario.cambiarFragmento(fragmentPerfil, actividadConUsuario.getResources().getString(R.string.Perfil));
+                    }
+                }
                 // Handle the back button event
 
             }

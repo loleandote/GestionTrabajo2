@@ -3,6 +3,7 @@ package com.example.gestiontrabajo.Perfil;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,7 +15,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.gestiontrabajo.ActividadConUsuario;
-import com.example.gestiontrabajo.FragmentConfiguracionPerfil;
 import com.example.gestiontrabajo.MainActivity;
 import com.example.gestiontrabajo.Observaciones.FragmentObservaciones;
 import com.example.gestiontrabajo.R;
@@ -46,7 +46,7 @@ public class FragmentPerfil extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentObservaciones fragmentObservaciones= new FragmentObservaciones(actividadConUsuario,actividadConUsuario.usuario,true);
-                actividadConUsuario.cambiarFragmento(fragmentObservaciones);
+                actividadConUsuario.cambiarFragmento(fragmentObservaciones, actividadConUsuario.getResources().getString(R.string.Observaciones));
             }
         });
         recyclerView = vista.findViewById(R.id.ReciclerViewPerfil);
@@ -65,17 +65,17 @@ public class FragmentPerfil extends Fragment {
                 // String opcion =perfilAdapter.lista[OpcionPulsada];
                 if (OpcionPulsada ==0){
                     FragmentIdiomas fragmentIdiomas = new FragmentIdiomas(actividadConUsuario);
-                    actividadConUsuario.cambiarFragmento(fragmentIdiomas);
+                    actividadConUsuario.cambiarFragmento(fragmentIdiomas, actividadConUsuario.getResources().getString(R.string.Idiomas));
                 }
                 switch (OpcionPulsada)
                 {
                     case 0:
                         FragmentIdiomas fragmentIdiomas = new FragmentIdiomas(actividadConUsuario);
-                        actividadConUsuario.cambiarFragmento(fragmentIdiomas);
+                        actividadConUsuario.cambiarFragmento(fragmentIdiomas, actividadConUsuario.getResources().getString(R.string.Idiomas));
                         break;
                     case 1:
                         FragmentConfiguracionPerfil fragmentConfiguracionPerfil = new FragmentConfiguracionPerfil(actividadConUsuario);
-                        actividadConUsuario.cambiarFragmento(fragmentConfiguracionPerfil);
+                        actividadConUsuario.cambiarFragmento(fragmentConfiguracionPerfil, actividadConUsuario.getResources().getString(R.string.MisDatos));
                         break;
                     case 2:
                         Intent intent= new Intent(actividadConUsuario, MainActivity.class);
@@ -87,11 +87,13 @@ public class FragmentPerfil extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario,true);
-             actividadConUsuario.cambiarFragmento(fragmentReservas);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.Reservas));
+                }
                 // Handle the back button event
-                //
-
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

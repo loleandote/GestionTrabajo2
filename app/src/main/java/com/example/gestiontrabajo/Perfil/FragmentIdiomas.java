@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -77,8 +79,12 @@ public class FragmentIdiomas extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                FragmentPerfil fragmentPerfil = new FragmentPerfil(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentPerfil);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    FragmentPerfil fragmentPerfil = new FragmentPerfil(actividadConUsuario);
+                    actividadConUsuario.cambiarFragmento(fragmentPerfil, actividadConUsuario.getResources().getString(R.string.Perfil));
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

@@ -3,6 +3,7 @@ package com.example.gestiontrabajo.Instalaciones;
 import android.app.DatePickerDialog;
 import android.content.res.Resources;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +18,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,6 +37,7 @@ import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.EmptyStackException;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -61,7 +64,7 @@ public class FragmentInstalacion extends Fragment {
     FragmentInstalaciones fragmentInstalaciones;
     public TextView usuarioSeleccionado;
     private boolean reservarAMi;
-
+    private LayoutInflater layoutInflater;
     public Usuario getUsuario() {
         return usuario;
     }
@@ -92,6 +95,7 @@ public class FragmentInstalacion extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        layoutInflater= inflater;
         vista= inflater.inflate(R.layout.fragment_instalacion, container, false);
         reservasDia = new ArrayList<>();
         horaInicio=0;
@@ -194,12 +198,15 @@ public class FragmentInstalacion extends Fragment {
         //ActualizarListas();
         Button reservar = vista.findViewById(R.id.ReservarBoton);
         reservar.setOnClickListener(new View.OnClickListener() {
+
             @Override
             public void onClick(View v) {
+                actividadConUsuario.mensajeCorrecto(vista, layoutInflater, R.string.InicioIncorrecto);
                 apiReservas apiReservas = actividadConUsuario.retrofit.create(apiReservas.class);
                 int diferencia = horaFin - horaInicio;
 
-                if (horaInicio>0 && horaFin>0&& diferencia > 0 && diferencia <= instalación.getTiempo_max_reserva()) {
+                if (horaInicio>0 && horaFin>0&& diferencia >= instalación.getTiempo_min_reserva() && diferencia <= instalación.getTiempo_max_reserva()) {
+
                     int precio = diferencia*instalación.getPrecio_hora();
                     int id=0;
                     if (reservarAMi)
@@ -208,17 +215,17 @@ public class FragmentInstalacion extends Fragment {
                         if (usuario.getId()>0)
                         id=usuario.getId();
                         if (id >0){
+                            if (usuario.isEs_cliente())
+                                actualizarSaldoUsuario();
                     Call<Reserva> respuesta = apiReservas.guardaReserva(id, instalación.getId(), instalación.getImagenes().get(0),instalación.getNombre(), diaNumero,mesNumero, añoNumero, horaInicio, horaFin, precio,false,false, false, true);
                     respuesta.enqueue(new Callback<Reserva>() {
                         @Override
                         public void onResponse(Call<Reserva> call, Response<Reserva> response) {
                             if (response.isSuccessful()) {
-                                if (usuario.isEs_cliente())
-                                    actualizarSaldoUsuario();
-                                else {
+                                actividadConUsuario.mensajeCorrecto(vista, layoutInflater,R.string.ReservaRealizada);
                                     FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
-                                    actividadConUsuario.cambiarFragmento(fragmentReservas);
-                                }
+                                    actividadConUsuario.cambiarFragmento(fragmentReservas, "Reservas");
+
                             }
                         }
 
@@ -230,7 +237,7 @@ public class FragmentInstalacion extends Fragment {
                         }
                         else {
                             Toast.makeText(getActivity(), "No se ha realizado la reserva",Toast.LENGTH_LONG).show();
-                            actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
+                            actividadConUsuario.cambiarFragmento(fragmentInstalaciones, actividadConUsuario.getResources().getString(R.string.Instalaciones));
                            // Toast.makeText(getActivity(),"nada",Toast.LENGTH_LONG).show();
                         }
                 }
@@ -239,7 +246,10 @@ public class FragmentInstalacion extends Fragment {
         OnBackPressedCallback callback = new OnBackPressedCallback(true ) {
             @Override
             public void handleOnBackPressed() {
-                actividadConUsuario.cambiarFragmento(fragmentInstalaciones);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else
+                actividadConUsuario.cambiarFragmento(fragmentInstalaciones,  actividadConUsuario.getResources().getString(R.string.Instalaciones));
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);
@@ -261,7 +271,7 @@ public class FragmentInstalacion extends Fragment {
                     añoNumero=year;
                     String mes = String.valueOf(mesNumero);
                     String dia2= String.valueOf(day);
-                    if (diferencia<=14 && diferencia>0){
+                    if (diferencia<=14 && diferencia>1){
                         horaInicio=0;
                         horaFin=0;
                         if(month+1<10){
@@ -281,6 +291,8 @@ public class FragmentInstalacion extends Fragment {
                         }
                         obtenerReservasDia();
                     }
+                    else
+                        actividadConUsuario.mensajeError(vista, layoutInflater, R.string.FechaIncorrecta);
 
                 }
 
@@ -292,20 +304,26 @@ public class FragmentInstalacion extends Fragment {
     private void actualizarSaldoUsuario(){
         apiUsuarios apiUsuarios = actividadConUsuario.retrofit.create(apiUsuarios.class);
         int creditos= actividadConUsuario.usuario.getCreditos()-instalación.getPrecio_hora()*(horaFin-horaInicio);
-        actividadConUsuario.usuario.setCreditos(creditos);
-        Call<Usuario> respuesta = apiUsuarios.actualizarUsuario(actividadConUsuario.usuario.getId(),actividadConUsuario.usuario);
-        respuesta.enqueue(new Callback<Usuario>() {
-            @Override
-            public void onResponse(Call<Usuario> call, Response<Usuario> response) {
-                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentReservas);
-            }
+        if (creditos>=0) {
 
-            @Override
-            public void onFailure(Call<Usuario> call, Throwable t) {
+            usuario.setCreditos(creditos);
+            Call<Usuario> respuesta = apiUsuarios.actualizarUsuario(actividadConUsuario.usuario.getId(), actividadConUsuario.usuario);
+            respuesta.enqueue(new Callback<Usuario>() {
+                @Override
+                public void onResponse(Call<Usuario> call, Response<Usuario> response) {
 
-            }
-        });
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.Reservas));
+                }
+
+                @Override
+                public void onFailure(Call<Usuario> call, Throwable t) {
+
+                }
+            });
+        }
+        else
+            actividadConUsuario.mensajeError(vista, layoutInflater,R.string.CreditoInsuficiente);
     }
     private void obtenerReservasDia(){
         apiReservas apiReservas= actividadConUsuario.retrofit.create(apiReservas.class);
@@ -353,7 +371,7 @@ public class FragmentInstalacion extends Fragment {
 
     private void irAFragmentUsuario(){
         FragmentUsuarios fragmentUsuarios = new FragmentUsuarios(actividadConUsuario, this);
-        actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+        actividadConUsuario.cambiarFragmento(fragmentUsuarios,  actividadConUsuario.getResources().getString(R.string.Usuarios));
     }
 
     public void cambiarUsuario(String nombre_usuario){

@@ -6,9 +6,11 @@ import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
 import android.util.Patterns;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -152,13 +154,14 @@ public class FragmentUsuario extends Fragment {
                     }
                     if(usuario.getNombre_usuario().length()>3&&usuario.getNombre_usuario().length()<9&&usuario.getContraseña_usuario().length()>7&& usuario.getContraseña_usuario().length()<17&&validarEmail(usuario.getCorreo_usuario()))
                     {
+                        actividadConUsuario.mensajeCorrecto(vista, inflater, R.string.UsuarioCorrecto);
                         Call<Usuario> respuesta = apiUsuarios.actualizarUsuario(usuario.getId(), usuario);
                     respuesta.enqueue(new Callback<Usuario>() {
                         @Override
                         public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                             if (response.isSuccessful()) {
                                 FragmentUsuarios fragmentUsuarios = new FragmentUsuarios(actividadConUsuario);
-                                actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+                                actividadConUsuario.cambiarFragmento(fragmentUsuarios, actividadConUsuario.getResources().getString(R.string.Usuarios));
                             }
                         }
 
@@ -187,13 +190,13 @@ public class FragmentUsuario extends Fragment {
                     }
                     Date hoy = new Date();
                     if(usuario.getNombre_usuario().length()>3&&usuario.getNombre_usuario().length()<9&&usuario.getContraseña_usuario().length()>7&& usuario.getContraseña_usuario().length()<17&&validarEmail(usuario.getCorreo_usuario())) {
-                        Call<Usuario> respuesta = apiUsuarios.guardaUsuario(usuario.getNombre_usuario(), usuario.getContraseña_usuario(), usuario.getCorreo_usuario(), hoy.getDate(), hoy.getMonth(), hoy.getYear() + 1900, usuario.getCreditos(), usuario.isPenalizado(), 0, 0, 0, usuario.getCodigo_rol());
+                        Call<Usuario> respuesta = apiUsuarios.guardaUsuario(usuario.getNombre_usuario(), usuario.getContraseña_usuario(), usuario.getCorreo_usuario(), hoy.getDate(), hoy.getMonth(), hoy.getYear() + 1900, usuario.getCreditos(), usuario.isPenalizado(), 0, 0, 0, usuario.getCodigo_rol(), usuario.getNombre_rol());
                         respuesta.enqueue(new Callback<Usuario>() {
                             @Override
                             public void onResponse(Call<Usuario> call, Response<Usuario> response) {
                                 if (response.isSuccessful()) {
                                     FragmentUsuarios fragmentUsuarios = new FragmentUsuarios(actividadConUsuario);
-                                    actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+                                    actividadConUsuario.cambiarFragmento(fragmentUsuarios,  actividadConUsuario.getResources().getString(R.string.Usuarios));
                                 }
                             }
 
@@ -217,18 +220,21 @@ public class FragmentUsuario extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentObservaciones fragmentObservaciones= new FragmentObservaciones(actividadConUsuario, usuario,false);
-                actividadConUsuario.cambiarFragmento(fragmentObservaciones);
+                actividadConUsuario.cambiarFragmento(fragmentObservaciones,  actividadConUsuario.getResources().getString(R.string.Observaciones));
             }
         });
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                if(fragmentUsuarios!=null)
-             actividadConUsuario.cambiarFragmento(fragmentUsuarios);
-                else
-                {
-                    FragmentUsuarios fragmentUsuarios= new FragmentUsuarios(actividadConUsuario);
-                    actividadConUsuario.cambiarFragmento(fragmentUsuarios);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    if (fragmentUsuarios != null)
+                        actividadConUsuario.cambiarFragmento(fragmentUsuarios, actividadConUsuario.getResources().getString(R.string.Usuarios));
+                    else {
+                        FragmentUsuarios fragmentUsuarios = new FragmentUsuarios(actividadConUsuario);
+                        actividadConUsuario.cambiarFragmento(fragmentUsuarios, actividadConUsuario.getResources().getString(R.string.Usuarios));
+                    }
                 }
             }
         };

@@ -3,8 +3,10 @@ package com.example.gestiontrabajo.Observaciones;
 import android.os.Bundle;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +35,7 @@ View vista;
 Usuario usuario;
 EditText editTextTitulo;
 EditText editTextContenido;
+private LayoutInflater layoutInflater;
 boolean yo;
     public FragmentObservacion() {
         // Required empty public constructor
@@ -50,12 +53,15 @@ boolean yo;
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         vista= inflater.inflate(R.layout.fragment_observacion, container, false);
-        if (observación!= null){
+        layoutInflater = inflater;
+        if (observación== null){
             observación= new Observación();
         observación.setId_usuario(usuario.getId());
         }
         editTextTitulo= vista.findViewById(R.id.editTextTitulo);
-
+        editTextTitulo.setText(observación.getTitulo());
+        editTextContenido = vista.findViewById(R.id.EditTextObservacionTexto);
+        editTextContenido.setText(observación.getContenido());
         Button botonGuardarObservacion = vista.findViewById(R.id.BotonGuardarObservacion);
         botonGuardarObservacion.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -66,8 +72,12 @@ boolean yo;
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
-                FragmentObservaciones fragmentObservaciones= new FragmentObservaciones(actividadConUsuario,usuario, yo);
-                actividadConUsuario.cambiarFragmento(fragmentObservaciones);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+                else {
+                    FragmentObservaciones fragmentObservaciones = new FragmentObservaciones(actividadConUsuario, usuario, yo);
+                    actividadConUsuario.cambiarFragmento(fragmentObservaciones, actividadConUsuario.getResources().getString(R.string.Observaciones));
+                }
                 // Handle the back button event
             }
         };
@@ -83,8 +93,9 @@ boolean yo;
             @Override
             public void onResponse(Call<Observación> call, Response<Observación> response) {
                 if(response.isSuccessful()){
+                    actividadConUsuario.mensajeCorrecto(vista, layoutInflater, R.string.ObservacionGuardada);
                     FragmentObservaciones fragmentObservaciones = new FragmentObservaciones(actividadConUsuario,usuario, yo);
-                    actividadConUsuario.cambiarFragmento(fragmentObservaciones);
+                    actividadConUsuario.cambiarFragmento(fragmentObservaciones,  actividadConUsuario.getResources().getString(R.string.Observaciones));
                 }
             }
 

@@ -1,12 +1,15 @@
 package com.example.gestiontrabajo.Inicio;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
@@ -16,6 +19,7 @@ import com.example.gestiontrabajo.Conexión.apiUsuarios;
 import com.example.gestiontrabajo.Datos.Usuario;
 import com.example.gestiontrabajo.MainActivity;
 import com.example.gestiontrabajo.R;
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -28,6 +32,7 @@ public class FragmentLogin extends Fragment {
 
     public MainActivity mainActivity;
     private View vista;
+    private LayoutInflater layoutInflater;
 
     public FragmentLogin() {
     }
@@ -39,7 +44,9 @@ public class FragmentLogin extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         vista = inflater.inflate(R.layout.fragment_login, container, false);
+        layoutInflater= inflater;
         EditText nombreEditText = vista.findViewById(R.id.nombreEditText);
         EditText contraseñaEditText = vista.findViewById(R.id.contraseñaEditText);
         Button entrar = vista.findViewById(R.id.EntrarButton);
@@ -77,6 +84,8 @@ public class FragmentLogin extends Fragment {
                             Date hoy = new Date();
                             if (fecha.compareTo(hoy) >= 0)
                                 quitarPena(lista.get(0), apiUsuarios);
+                            else
+                                mainActivity.mensajeError(vista, layoutInflater,R.string.UsuarioBaneado);
 
                     }
                     else

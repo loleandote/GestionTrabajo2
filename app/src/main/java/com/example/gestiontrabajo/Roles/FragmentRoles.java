@@ -1,11 +1,13 @@
 package com.example.gestiontrabajo.Roles;
 
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -48,7 +50,7 @@ public class FragmentRoles extends Fragment {
             @Override
             public void onClick(View v) {
                 FragmentRol fragmentRol= new FragmentRol(actividadConUsuario);
-                actividadConUsuario.cambiarFragmento(fragmentRol);
+                actividadConUsuario.cambiarFragmento(fragmentRol, actividadConUsuario.getResources().getString(R.string.Rol));
             }
         });
         RecyclerView recyclerView= vista.findViewById(R.id.ReciclerViewRoles);
@@ -62,7 +64,7 @@ public class FragmentRoles extends Fragment {
                 int rolPulsado = recyclerView.getChildAdapterPosition(v);
                 Rol rol = rolAdapter.getLista().get(rolPulsado);
                 FragmentRol fragmentRol = new FragmentRol(actividadConUsuario,rol);
-                actividadConUsuario.cambiarFragmento(fragmentRol);
+                actividadConUsuario.cambiarFragmento(fragmentRol, actividadConUsuario.getResources().getString(R.string.Rol));
             }
         });
         recyclerView.setAdapter(rolAdapter);
@@ -71,8 +73,12 @@ public class FragmentRoles extends Fragment {
             @Override
             public void handleOnBackPressed() {
                 // Handle the back button event
-                FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
-                actividadConUsuario.cambiarFragmento(fragmentReservas);
+                if (actividadConUsuario.drawerLayout.isDrawerOpen(Gravity.LEFT))
+                    actividadConUsuario.drawerLayout.closeDrawers();
+               else {
+                    FragmentReservas fragmentReservas = new FragmentReservas(actividadConUsuario, true);
+                    actividadConUsuario.cambiarFragmento(fragmentReservas, actividadConUsuario.getResources().getString(R.string.Reservas));
+                }
             }
         };
         requireActivity().getOnBackPressedDispatcher().addCallback(getViewLifecycleOwner(), callback);

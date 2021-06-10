@@ -26,7 +26,7 @@ public interface apiUsuarios {
     @GET("usuarios")
     Call<ArrayList<Usuario>> obtenerUsuariosPorRoles(@Query("codigo_rol") ArrayList<Integer> rol);
     @GET("usuarios")
-    Call<ArrayList<Usuario>> obtenerUsuarioNomberContraseñaCorreo(@Query("nombre_usuario") String nombre_usuario, @Query("contrasña_usuario") String contraseña,@Query("correo_usuario")String correoUsuario);
+    Call<ArrayList<Usuario>> obtenerUsuarioNombreContraseñaCorreo(@Query("nombre_usuario") String nombre_usuario, @Query("contrasña_usuario") String contraseña,@Query("correo_usuario")String correoUsuario);
     @FormUrlEncoded
     @POST("usuarios")
     Call<Usuario> guardaUsuario(
@@ -41,7 +41,9 @@ public interface apiUsuarios {
             @Field("dia_fin_pena") int dia_fin_pena,
             @Field("mes_fin_pena") int mes_fin_pena,
             @Field("anyo_fin_pena") int anyo_fin_pena,
-            @Field("codigo_rol") int codigo_rol
+            @Field("codigo_rol") int codigo_rol,
+            @Field("nombre_rol") String nombre_rol
+
     );
     @PUT("usuarios/{id}")
     Call<Usuario> actualizarUsuario(@Path("id") int id, @Body Usuario usuario);
