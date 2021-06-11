@@ -54,7 +54,6 @@ public class ActividadConUsuario extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        String hola="hoa";
         setContentView(R.layout.activity_actividad_con_usuario);
         retrofit= Cliente.obtenerCliente();
         int id;
