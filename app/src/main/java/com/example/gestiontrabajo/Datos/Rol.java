@@ -62,6 +62,7 @@ public class Rol {
         this.mod_usuario_otros = mod_usuario_otros;
         this.mod_permiso = mod_permiso;
         this.exporta_importa = exporta_importa;
+        String hola="hoa";
     }
 
     public boolean isRealiza_reservas() {
